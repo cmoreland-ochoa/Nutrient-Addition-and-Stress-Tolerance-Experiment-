@@ -1,0 +1,2054 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={GAM PAM},
+  pdfauthor={Jessica Glazner},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{GAM PAM}
+\author{Jessica Glazner}
+\date{2024-11-22}
+
+\begin{document}
+\maketitle
+
+\hypertarget{project-overview}{%
+\section{Project overview}\label{project-overview}}
+
+\hypertarget{the-goal-of-the-naste-project-was-to-test-how-different-sources-of-enrichment-influence-corals-with-and-without-thermal-stress.-we-used-four-differnt-enrichment-sources-seabird-guano-wastewater-effluent-inorganic-nutrients-and-a-control-seawater-in-this-83-day-long-experiment.-two-species-of-coral-montipora-capitata-and-porites-compressa-were-used-and-half-of-the-corals-were-also-run-through-a-simulated-bleaching-event-mmm-3-c-from-days-40-54-mcap-and-40-55-pcom.-the-photochemical-efficiency-fvfm-of-each-coral-fragment-was-measured-weekly-to-determine-how-the-different-enrichment-and-heat-treatments-were-affecting-photosynthesis.}{%
+\subsubsection{The goal of the NASTE project was to test how different
+sources of enrichment influence corals with and without thermal stress.
+We used four differnt enrichment sources, seabird guano, wastewater
+effluent, inorganic nutrients, and a control seawater, in this 83 day
+long experiment. Two species of coral, Montipora capitata and Porites
+compressa, were used, and half of the corals were also run through a
+simulated bleaching event (MMM +3 C) from days 40-54 (Mcap) and 40-55
+(Pcom). The photochemical efficiency (FvFm) of each coral fragment was
+measured weekly to determine how the different enrichment and heat
+treatments were affecting
+photosynthesis.}\label{the-goal-of-the-naste-project-was-to-test-how-different-sources-of-enrichment-influence-corals-with-and-without-thermal-stress.-we-used-four-differnt-enrichment-sources-seabird-guano-wastewater-effluent-inorganic-nutrients-and-a-control-seawater-in-this-83-day-long-experiment.-two-species-of-coral-montipora-capitata-and-porites-compressa-were-used-and-half-of-the-corals-were-also-run-through-a-simulated-bleaching-event-mmm-3-c-from-days-40-54-mcap-and-40-55-pcom.-the-photochemical-efficiency-fvfm-of-each-coral-fragment-was-measured-weekly-to-determine-how-the-different-enrichment-and-heat-treatments-were-affecting-photosynthesis.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# load libraries}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidyverse' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'ggplot2' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tibble' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tidyr' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'readr' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'purrr' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'dplyr' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'stringr' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'forcats' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'lubridate' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.5.1
+## v ggplot2   3.5.0     v tibble    3.2.1
+## v lubridate 1.9.3     v tidyr     1.3.1
+## v purrr     1.0.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lme4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lme4' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'Matrix' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Matrix'
+## 
+## The following objects are masked from 'package:tidyr':
+## 
+##     expand, pack, unpack
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lmerTest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'lmerTest' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'lmerTest'
+## 
+## The following object is masked from 'package:lme4':
+## 
+##     lmer
+## 
+## The following object is masked from 'package:stats':
+## 
+##     step
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(emmeans)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'emmeans' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'car' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'carData' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'car'
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     recode
+## 
+## The following object is masked from 'package:purrr':
+## 
+##     some
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(magrittr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'magrittr'
+## 
+## The following object is masked from 'package:purrr':
+## 
+##     set_names
+## 
+## The following object is masked from 'package:tidyr':
+## 
+##     extract
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(gamm4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'gamm4' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: mgcv
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'mgcv' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: nlme
+## 
+## Attaching package: 'nlme'
+## 
+## The following object is masked from 'package:lme4':
+## 
+##     lmList
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     collapse
+## 
+## This is mgcv 1.9-1. For overview type 'help("mgcv-package")'.
+## This is gamm4 0.2-6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(mgcv)}
+\FunctionTok{library}\NormalTok{(tidygam)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidygam' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidymv)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidymv' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## tidymv has been superseded by tidygam. The package tidymv is no longer maintained but will be
+##     kept on CRAN to ensure reproducibility of older analyses. Users should
+##     use the replacement package tidygam for new analyses, which is available on
+##     CRAN and GitHub (https://github.com/stefanocoretta/tidygam).
+## 
+## Attaching package: 'tidymv'
+## 
+## The following objects are masked from 'package:tidygam':
+## 
+##     get_difference, predict_gam
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(gridExtra)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'gridExtra' was built under R version 4.2.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'gridExtra'
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     combine
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#read in data}
+
+\NormalTok{PAM }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{jglaz}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Desktop}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Datasets}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{PAM\_formatted.csv"}\NormalTok{)}
+
+\CommentTok{\# subset dataframe by species}
+
+\NormalTok{mc\_pam }\OtherTok{\textless{}{-}}\NormalTok{ PAM [PAM}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==} \StringTok{"m"}\NormalTok{,]}
+\NormalTok{pc\_pam }\OtherTok{\textless{}{-}}\NormalTok{ PAM [PAM}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==} \StringTok{"p"}\NormalTok{,]}
+
+\CommentTok{\# create interaction term}
+
+\NormalTok{pc\_pam }\OtherTok{\textless{}{-}}\NormalTok{ pc\_pam }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#create interaction term }
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{trt\_temp =} \FunctionTok{interaction}\NormalTok{(treatment, temp, }\AttributeTok{drop=}\ConstantTok{TRUE}\NormalTok{))}
+
+\NormalTok{mc\_pam }\OtherTok{\textless{}{-}}\NormalTok{ mc\_pam }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#create interaction term }
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{trt\_temp =} \FunctionTok{interaction}\NormalTok{(treatment, temp, }\AttributeTok{drop=}\ConstantTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define colors for the treatments}
+\NormalTok{naste\_colors }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Control"} \OtherTok{=} \StringTok{"\#08b5d3"}\NormalTok{,  }
+               \StringTok{"Effluent"} \OtherTok{=} \StringTok{"\#e12618"}\NormalTok{,   }
+               \StringTok{"Guano"} \OtherTok{=} \StringTok{"\#01ad74"}\NormalTok{,   }
+               \StringTok{"Inorganic"} \OtherTok{=} \StringTok{"\#d9a33a"}\NormalTok{)  }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#mgvc package won\textquotesingle{}t read character terms, must convert to factors}
+\NormalTok{mc\_pam}\SpecialCharTok{$}\NormalTok{treatment}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(mc\_pam}\SpecialCharTok{$}\NormalTok{treatment)}
+\NormalTok{mc\_pam}\SpecialCharTok{$}\NormalTok{temp}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(mc\_pam}\SpecialCharTok{$}\NormalTok{temp)}
+\NormalTok{mc\_pam}\SpecialCharTok{$}\NormalTok{day}\OtherTok{\textless{}{-}}\FunctionTok{as.numeric}\NormalTok{(mc\_pam}\SpecialCharTok{$}\NormalTok{day)}
+\NormalTok{mc\_pam}\SpecialCharTok{$}\NormalTok{ID}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(mc\_pam}\SpecialCharTok{$}\NormalTok{ID)}
+\NormalTok{mc\_pam}\SpecialCharTok{$}\NormalTok{genotype}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(mc\_pam}\SpecialCharTok{$}\NormalTok{genotype)}
+\NormalTok{pc\_pam}\SpecialCharTok{$}\NormalTok{treatment}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(pc\_pam}\SpecialCharTok{$}\NormalTok{treatment)}
+\NormalTok{pc\_pam}\SpecialCharTok{$}\NormalTok{temp}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(pc\_pam}\SpecialCharTok{$}\NormalTok{temp)}
+\NormalTok{pc\_pam}\SpecialCharTok{$}\NormalTok{day}\OtherTok{\textless{}{-}}\FunctionTok{as.numeric}\NormalTok{(pc\_pam}\SpecialCharTok{$}\NormalTok{day)}
+\NormalTok{pc\_pam}\SpecialCharTok{$}\NormalTok{ID}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(pc\_pam}\SpecialCharTok{$}\NormalTok{ID)}
+\NormalTok{pc\_pam}\SpecialCharTok{$}\NormalTok{genotype}\OtherTok{\textless{}{-}}\FunctionTok{as.factor}\NormalTok{(pc\_pam}\SpecialCharTok{$}\NormalTok{genotype)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exploratory-plots-and-analysis}{%
+\section{Exploratory Plots and
+Analysis}\label{exploratory-plots-and-analysis}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Are there significant differences that can be explained by genotype?}
+
+  \DocumentationTok{\#\# try lm with genotype as fixed effect}
+\NormalTok{pc\_geno }\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ genotype, }\AttributeTok{data=}\NormalTok{pc\_pam)}
+\FunctionTok{summary}\NormalTok{(pc\_geno)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = FvFm ~ genotype, data = pc_pam)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.23186 -0.02575  0.01966  0.04029  0.08924 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.4796456  0.0065214  73.549  < 2e-16 ***
+## genotype2   -0.0093081  0.0091938  -1.012 0.311685    
+## genotype3   -0.0388824  0.0093132  -4.175 3.36e-05 ***
+## genotype4   -0.0003831  0.0091938  -0.042 0.966777    
+## genotype5    0.0008801  0.0092522   0.095 0.924247    
+## genotype6   -0.0343122  0.0092522  -3.709 0.000225 ***
+## genotype7    0.0040596  0.0092522   0.439 0.660966    
+## genotype8   -0.0072956  0.0091938  -0.794 0.427739    
+## genotype9   -0.0287884  0.0092824  -3.101 0.002004 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.05796 on 697 degrees of freedom
+## Multiple R-squared:  0.06874,    Adjusted R-squared:  0.05805 
+## F-statistic: 6.431 on 8 and 697 DF,  p-value: 4.363e-08
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mc\_geno }\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ genotype, }\AttributeTok{data=}\NormalTok{mc\_pam)}
+\FunctionTok{summary}\NormalTok{(mc\_geno)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = FvFm ~ genotype, data = mc_pam)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.37920 -0.01516  0.01077  0.03242  0.13180 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  4.929e-01  7.189e-03  68.567  < 2e-16 ***
+## genotype2    1.168e-02  1.017e-02   1.149  0.25088    
+## genotype3   -1.490e-02  1.017e-02  -1.465  0.14326    
+## genotype4   -7.374e-03  1.014e-02  -0.728  0.46711    
+## genotype5    2.410e-02  1.017e-02   2.371  0.01803 *  
+## genotype6   -2.795e-02  1.030e-02  -2.713  0.00683 ** 
+## genotype7   -6.674e-02  1.045e-02  -6.387  3.1e-10 ***
+## genotype8    1.133e-02  1.014e-02   1.117  0.26418    
+## genotype9    8.829e-05  1.014e-02   0.009  0.99305    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.0639 on 693 degrees of freedom
+## Multiple R-squared:  0.1319, Adjusted R-squared:  0.1219 
+## F-statistic: 13.16 on 8 and 693 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{\# yes, genotype is responsible for differences in FvFm values}
+
+  \DocumentationTok{\#\# If we use genotype as a random effect in the lme}
+
+\NormalTok{pc\_lme }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ treatment }\SpecialCharTok{*}\NormalTok{ temp }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{genotype), }\AttributeTok{data=}\NormalTok{pc\_pam)}
+\FunctionTok{summary}\NormalTok{(pc\_lme)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: FvFm ~ treatment * temp + (1 | genotype)
+##    Data: pc_pam
+## 
+## REML criterion at convergence: -2117.1
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.8336 -0.5467  0.0792  0.6167  2.1485 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev.
+##  genotype (Intercept) 0.0002541 0.01594 
+##  Residual             0.0026135 0.05112 
+## Number of obs: 706, groups:  genotype, 9
+## 
+## Fixed effects:
+##                                 Estimate Std. Error         df t value Pr(>|t|)
+## (Intercept)                     0.484256   0.007568  25.472359  63.991  < 2e-16
+## treatmenteffluent               0.015789   0.007621 689.977283   2.072   0.0387
+## treatmentguano                  0.016822   0.007621 689.977283   2.207   0.0276
+## treatmentinorganic              0.001544   0.007621 689.977283   0.203   0.8395
+## tempHeated                     -0.048769   0.007642 689.988071  -6.381 3.22e-10
+## treatmenteffluent:tempHeated   -0.008812   0.010839 689.986568  -0.813   0.4165
+## treatmentguano:tempHeated       0.001464   0.010924 690.014340   0.134   0.8935
+## treatmentinorganic:tempHeated  -0.007176   0.010824 690.007046  -0.663   0.5076
+##                                  
+## (Intercept)                   ***
+## treatmenteffluent             *  
+## treatmentguano                *  
+## treatmentinorganic               
+## tempHeated                    ***
+## treatmenteffluent:tempHeated     
+## treatmentguano:tempHeated        
+## treatmentinorganic:tempHeated    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) trtmntf trtmntg trtmntn tmpHtd trtmntf:H trtmntg:H
+## trtmntfflnt -0.504                                                   
+## treatmentgn -0.504  0.500                                            
+## trtmntnrgnc -0.504  0.500   0.500                                    
+## tempHeated  -0.502  0.499   0.499   0.499                            
+## trtmntffl:H  0.354 -0.703  -0.352  -0.352  -0.705                    
+## trtmntgn:tH  0.351 -0.349  -0.698  -0.349  -0.700  0.493             
+## trtmntnrg:H  0.355 -0.352  -0.352  -0.704  -0.706  0.498     0.494
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{\# 8.9\% of variation in pcom FvFm is due to genotype (in random effect section of output: genotype/(geonotype+residual)}
+
+\NormalTok{mc\_lme }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ treatment }\SpecialCharTok{*}\NormalTok{ temp }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{genotype), }\AttributeTok{data=}\NormalTok{mc\_pam)}
+\FunctionTok{summary}\NormalTok{(mc\_lme)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: FvFm ~ treatment * temp + (1 | genotype)
+##    Data: mc_pam
+## 
+## REML criterion at convergence: -1880.8
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -5.8946 -0.3096  0.0759  0.5540  2.2755 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev.
+##  genotype (Intercept) 0.0007052 0.02656 
+##  Residual             0.0035823 0.05985 
+## Number of obs: 702, groups:  genotype, 9
+## 
+## Fixed effects:
+##                                 Estimate Std. Error         df t value Pr(>|t|)
+## (Intercept)                     0.499922   0.010870  15.888962  45.990  < 2e-16
+## treatmenteffluent               0.006678   0.008922 685.944028   0.748   0.4545
+## treatmentguano                  0.016244   0.008922 685.944027   1.821   0.0691
+## treatmentinorganic              0.001078   0.008922 685.944028   0.121   0.9039
+## tempHeated                     -0.049274   0.009001 685.998122  -5.474 6.18e-08
+## treatmenteffluent:tempHeated    0.019702   0.012879 686.119397   1.530   0.1265
+## treatmentguano:tempHeated       0.004613   0.012746 685.962185   0.362   0.7176
+## treatmentinorganic:tempHeated   0.004161   0.012692 685.977105   0.328   0.7431
+##                                  
+## (Intercept)                   ***
+## treatmenteffluent                
+## treatmentguano                .  
+## treatmentinorganic               
+## tempHeated                    ***
+## treatmenteffluent:tempHeated     
+## treatmentguano:tempHeated        
+## treatmentinorganic:tempHeated    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) trtmntf trtmntg trtmntn tmpHtd trtmntf:H trtmntg:H
+## trtmntfflnt -0.410                                                   
+## treatmentgn -0.410  0.500                                            
+## trtmntnrgnc -0.410  0.500   0.500                                    
+## tempHeated  -0.407  0.496   0.496   0.496                            
+## trtmntffl:H  0.284 -0.693  -0.346  -0.346  -0.699                    
+## trtmntgn:tH  0.287 -0.350  -0.700  -0.350  -0.706  0.494             
+## trtmntnrg:H  0.289 -0.351  -0.351  -0.703  -0.709  0.496     0.501
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{\# 16.4\% of variation in mcap FvFm is due to genotype}
+
+\CommentTok{\# Genotype did explain some varation in the different FvFm scores (particularly in Mcap), however because it was a small amount of variation explained by genotype differences, we are not going to include genotype as a random effect in the GAM (for now)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{gams}{%
+\section{GAMS}\label{gams}}
+
+\hypertarget{utilizing-a-gam-model-structure-to-capture-the-non-linear-response-of-fvfm-to-the-different-treatments.}{%
+\subsubsection{Utilizing a gam model structure to capture the non-linear
+response of FvFm to the different
+treatments.}\label{utilizing-a-gam-model-structure-to-capture-the-non-linear-response-of-fvfm-to-the-different-treatments.}}
+
+\hypertarget{porites}{%
+\subsection{PORITES}\label{porites}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Write different model options}
+  \CommentTok{\# Model 1 {-}different slope and different intercept}
+  \CommentTok{\# Model 2 {-} same slope and different intercept}
+  \CommentTok{\# Model 3 {-} global smoother assuming no treatment differences by day}
+
+\CommentTok{\# Note{-}allowing \textquotesingle{}k\textquotesingle{} to be set automatically by the model, we can adjust to increase or decrease the \textquotesingle{}wiggliness\textquotesingle{}}
+  
+\NormalTok{pc\_pam\_1 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day,}\AttributeTok{by=}\NormalTok{trt\_temp),}\AttributeTok{data=}\NormalTok{pc\_pam) }\CommentTok{\#interaction term smoothed by day}
+\FunctionTok{summary}\NormalTok{(pc\_pam\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.484470   0.003087 156.924  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.015686   0.004366   3.593 0.000352 ***
+## trt_tempguano.Ambient      0.016784   0.004366   3.844 0.000133 ***
+## trt_tempinorganic.Ambient  0.001452   0.004366   0.333 0.739493    
+## trt_tempcontrol.Heated    -0.048497   0.004377 -11.081  < 2e-16 ***
+## trt_tempeffluent.Heated   -0.042035   0.004407  -9.538  < 2e-16 ***
+## trt_tempguano.Heated      -0.030784   0.004520  -6.811 2.22e-11 ***
+## trt_tempinorganic.Heated  -0.055023   0.004390 -12.533  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F  p-value    
+## s(day):trt_tempcontrol.Ambient   7.503  8.449  3.808 0.000177 ***
+## s(day):trt_tempeffluent.Ambient  3.600  4.435  3.306 0.008538 ** 
+## s(day):trt_tempguano.Ambient     4.774  5.820  4.424 0.000244 ***
+## s(day):trt_tempinorganic.Ambient 5.413  6.536  4.685 9.31e-05 ***
+## s(day):trt_tempcontrol.Heated    6.640  7.766 49.364  < 2e-16 ***
+## s(day):trt_tempeffluent.Heated   7.343  8.342 46.305  < 2e-16 ***
+## s(day):trt_tempguano.Heated      7.324  8.330 32.701  < 2e-16 ***
+## s(day):trt_tempinorganic.Heated  8.314  8.873 55.318  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =   0.76   Deviance explained =   78%
+## GCV = 0.00093425  Scale est. = 0.00085629  n = 706
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(pc\_pam\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric Terms:
+##          df     F p-value
+## trt_temp  7 90.02  <2e-16
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F  p-value
+## s(day):trt_tempcontrol.Ambient   7.503  8.449  3.808 0.000177
+## s(day):trt_tempeffluent.Ambient  3.600  4.435  3.306 0.008538
+## s(day):trt_tempguano.Ambient     4.774  5.820  4.424 0.000244
+## s(day):trt_tempinorganic.Ambient 5.413  6.536  4.685 9.31e-05
+## s(day):trt_tempcontrol.Heated    6.640  7.766 49.364  < 2e-16
+## s(day):trt_tempeffluent.Heated   7.343  8.342 46.305  < 2e-16
+## s(day):trt_tempguano.Heated      7.324  8.330 32.701  < 2e-16
+## s(day):trt_tempinorganic.Heated  8.314  8.873 55.318  < 2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pc\_pam\_2 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{pc\_pam) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(pc\_pam\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.484512   0.003970 122.058  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.015789   0.005613   2.813  0.00505 ** 
+## trt_tempguano.Ambient      0.016822   0.005613   2.997  0.00282 ** 
+## trt_tempinorganic.Ambient  0.001544   0.005613   0.275  0.78328    
+## trt_tempcontrol.Heated    -0.048618   0.005629  -8.637  < 2e-16 ***
+## trt_tempeffluent.Heated   -0.042172   0.005663  -7.447 2.86e-13 ***
+## trt_tempguano.Heated      -0.030644   0.005756  -5.324 1.38e-07 ***
+## trt_tempinorganic.Heated  -0.054806   0.005645  -9.709  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df    F p-value    
+## s(day) 7.238  8.261 84.7  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.603   Deviance explained = 61.1%
+## GCV = 0.0014491  Scale est. = 0.0014178  n = 706
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(pc\_pam\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric Terms:
+##          df     F p-value
+## trt_temp  7 54.52  <2e-16
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df    F p-value
+## s(day) 7.238  8.261 84.7  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pc\_pam\_3 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{pc\_pam) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(pc\_pam\_3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.467150   0.001757   265.8   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(day) 6.723   7.84 57.19  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.389   Deviance explained = 39.4%
+## GCV = 0.0022048  Scale est. = 0.0021807  n = 706
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(pc\_pam\_3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value
+## s(day) 6.723  7.840 57.19  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# compare models}
+\NormalTok{pc\_AIC }\OtherTok{\textless{}{-}} \FunctionTok{AIC}\NormalTok{ (pc\_pam\_1, pc\_pam\_2, pc\_pam\_3)}
+\FunctionTok{print}\NormalTok{(pc\_AIC) }\CommentTok{\# best option is pc\_pam\_1 (smallest AIC score) with the interaction term smoothed by day}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 df       AIC
+## pc_pam_1 59.912292 -2924.559
+## pc_pam_2 16.237957 -2609.802
+## pc_pam_3  8.723434 -2313.232
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot\_smooths for the model output on rawdata {-} needs a few formatting adjustments}
+\NormalTok{pc\_pam\_plot}\OtherTok{\textless{}{-}}
+  \FunctionTok{plot\_smooths}\NormalTok{(}
+  \AttributeTok{model =}\NormalTok{ pc\_pam\_1,}
+\AttributeTok{series =}\NormalTok{ day,}
+\AttributeTok{comparison=}\NormalTok{ trt\_temp,}
+\AttributeTok{ci\_z =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data=}\NormalTok{pc\_pam, }
+             \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{day, }\AttributeTok{y=}\NormalTok{FvFm, }\AttributeTok{color=}\NormalTok{trt\_temp)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{,}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Pcom PAM GAM"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"FvFm"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Day"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{pc\_pam\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{plot_differences}{%
+\subsection{Plot\_differences}\label{plot_differences}}
+
+\hypertarget{compare-each-treatment-to-their-heated-counterpart}{%
+\subsubsection{Compare each treatment to their heated
+counterpart}\label{compare-each-treatment-to-their-heated-counterpart}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of your comparisons}
+\NormalTok{comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_ca"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"control.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Control Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"gh\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"guano.Heated"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Guano Heated vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Inorganic Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Loop through each comparison to generate plots}
+\NormalTok{plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Initialize an empty list to store plots}
+
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    pc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ch\_ca,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{eh\_ea,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{gh\_ga,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ih\_ia,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-8-1.pdf}
+\#\#\# Heat was introduced on day 40, we can see that all treatments
+divereged around day 40. Max FvFm value in dataset was 0.554 and min was
+0.219, total range of 0.335. The introduction of heat decreased FvFm
+values by 37.3\% in control corals, 38.8\% in effluent corals, 32.8\% in
+guano corals, and 44.8\% in inorganic corals. Percentages found by
+looking at each max difference/0.335. Eg for control 0.125/0.335=0.373
+
+\hypertarget{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm}{%
+\subsection{Difference in all ambient corals to see if treatment had an
+effect on
+FvFm}\label{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{amb\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Inorganic Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ea\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Guano Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{amb\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ amb\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    pc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    amb\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ia,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ea\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ga,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-9-1.pdf}
+\#\#\# There are differenecs between treatments. The max ambient FvFm
+value is 0.554 and min is 0.376, the range of values is 0.178. Control
+is 22.5\% lower than effluent and 19.7\% lower than guano between days
+55-65. Inorganic is 14\% lower than effluent (days 45-62) and 11.2\%
+lower than guano (days 55-62). Control and inorganic the same. Effluent
+and guano the same. *NOTE - ambient temps reached 28 C around day 50 for
+a few days, potentally why we see divergence in treatment effects at
+that time.
+
+\hypertarget{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm}{%
+\subsection{Difference in all heated corals to see if treatment x heat
+had an effect on
+FvFm}\label{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{heat\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ch"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"control.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Control Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Guano Heated"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{heat\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ heat\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    pc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    heat\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_ch,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{eh\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_gh,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# max heated value is 0.553 and min is 0.219, range is 0.334}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{max-heated-fvfm-value-is-0.553-and-min-is-0.219-range-is-0.334.-inorganic-was-9-lower-than-control-12-lower-than-effluent-and-18-lower-than-guano-during-max-heat-and-through-recovery-for-guano.guano-was-15-higher-than-control-and-11.2-higher-than-effluent-corals-during-max-heat-and-early-recovery.-control-and-effluent-were-similar.}{%
+\subsubsection{Max heated FvFm value is 0.553 and min is 0.219, range is
+0.334. Inorganic was 9\% lower than control, 12\% lower than effluent,
+and 18\% lower than guano during max heat (and through recovery for
+guano).Guano was 15\% higher than control and 11.2\% higher than
+effluent corals during max heat and early recovery. Control and effluent
+were
+similar.}\label{max-heated-fvfm-value-is-0.553-and-min-is-0.219-range-is-0.334.-inorganic-was-9-lower-than-control-12-lower-than-effluent-and-18-lower-than-guano-during-max-heat-and-through-recovery-for-guano.guano-was-15-higher-than-control-and-11.2-higher-than-effluent-corals-during-max-heat-and-early-recovery.-control-and-effluent-were-similar.}}
+
+\hypertarget{overall-interpretation-of-porites---heat-significantly-decreased-fvfm-values-in-all-treatments-guano-had-the-smallest-difference-32.8-and-inorganic-had-the-greatest-difference-44.8.-with-the-addition-of-nutrient-treatments-to-ambient-corals-both-effluent-and-guano-supported-higher-fvfm-values-compared-to-control-and-inorganic-treatments-but-only-between-days-45-65-ish.-during-the-interaction-of-heat-x-treatment-guano-corals-performed-significantly-better-than-the-other-3-treatments-while-inorganic-corals-had-significantly-lower-fvfm-values-than-the-other-3-treatments.}{%
+\subsection{Overall interpretation of Porites - heat significantly
+decreased FvFm values in all treatments, guano had the smallest
+difference (32.8\%) and inorganic had the greatest difference (44.8\%).
+With the addition of nutrient treatments to ambient corals, both
+effluent and guano supported higher FvFm values compared to control and
+inorganic treatments, but only between days 45-65 (ish). During the
+interaction of heat x treatment, guano corals performed significantly
+better than the other 3 treatments, while inorganic corals had
+significantly lower FvFm values than the other 3
+treatments.}\label{overall-interpretation-of-porites---heat-significantly-decreased-fvfm-values-in-all-treatments-guano-had-the-smallest-difference-32.8-and-inorganic-had-the-greatest-difference-44.8.-with-the-addition-of-nutrient-treatments-to-ambient-corals-both-effluent-and-guano-supported-higher-fvfm-values-compared-to-control-and-inorganic-treatments-but-only-between-days-45-65-ish.-during-the-interaction-of-heat-x-treatment-guano-corals-performed-significantly-better-than-the-other-3-treatments-while-inorganic-corals-had-significantly-lower-fvfm-values-than-the-other-3-treatments.}}
+
+\hypertarget{significance-guano-supported-photochemical-efficiency-in-corals-with-and-without-heat.-effluent-supported-photochemical-efficiency-without-heat-but-when-heat-was-introduced-it-performed-no-different-than-the-control-corals.-the-addition-of-just-nutrients-inorganic-without-the-rest-of-the-stuff-in-each-source-had-the-greatest-negative-impact-on-the-corals.}{%
+\subsection{Significance: Guano supported photochemical efficiency in
+corals with and without heat. Effluent supported photochemical
+efficiency without heat, but when heat was introduced it performed no
+different than the control corals. The addition of just nutrients
+(inorganic) without the rest of the `stuff' in each source had the
+greatest negative impact on the
+corals.}\label{significance-guano-supported-photochemical-efficiency-in-corals-with-and-without-heat.-effluent-supported-photochemical-efficiency-without-heat-but-when-heat-was-introduced-it-performed-no-different-than-the-control-corals.-the-addition-of-just-nutrients-inorganic-without-the-rest-of-the-stuff-in-each-source-had-the-greatest-negative-impact-on-the-corals.}}
+
+\hypertarget{linear-mixed-effects-model-on-just-heated-corals-from-day-40---80-start-of-heating-to-end-of-experiment}{%
+\subsection{Linear Mixed Effects Model on just heated corals from day 40
+- 80 (start of heating to end of
+experiment)}\label{linear-mixed-effects-model-on-just-heated-corals-from-day-40---80-start-of-heating-to-end-of-experiment}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter dataset}
+\NormalTok{pc\_heat }\OtherTok{\textless{}{-}}\NormalTok{ pc\_pam [pc\_pam}\SpecialCharTok{$}\NormalTok{temp }\SpecialCharTok{==} \StringTok{"Heated"}\NormalTok{,]}
+\NormalTok{pc\_heat }\OtherTok{\textless{}{-}}\NormalTok{ pc\_heat }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(day }\SpecialCharTok{\textgreater{}=} \DecValTok{40}\NormalTok{)}
+
+
+\CommentTok{\#lme}
+\NormalTok{pc\_heat\_lme }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ treatment }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{genotype) }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{ID), }\AttributeTok{data=}\NormalTok{pc\_heat)}
+\FunctionTok{summary}\NormalTok{(pc\_heat\_lme)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: FvFm ~ treatment + (1 | genotype) + (1 | ID)
+##    Data: pc_heat
+## 
+## REML criterion at convergence: -611.5
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.9729 -0.7029  0.1101  0.7245  2.1036 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev.
+##  ID       (Intercept) 0.0003262 0.01806 
+##  genotype (Intercept) 0.0003170 0.01780 
+##  Residual             0.0021412 0.04627 
+## Number of obs: 202, groups:  ID, 36; genotype, 9
+## 
+## Fixed effects:
+##                    Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)         0.39081    0.01058 24.16138  36.939   <2e-16 ***
+## treatmenteffluent   0.00484    0.01245 23.59633   0.389    0.701    
+## treatmentguano      0.01761    0.01266 25.01642   1.391    0.176    
+## treatmentinorganic -0.01192    0.01243 23.37248  -0.959    0.347    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) trtmntf trtmntg
+## trtmntfflnt -0.582                
+## treatmentgn -0.573  0.487         
+## trtmntnrgnc -0.583  0.496   0.488
+\end{verbatim}
+
+\hypertarget{no-significant-differences-between-treatments-during-heatingrecovery-phase}{%
+\subsubsection{No significant differences between treatments during
+heating/recovery
+phase}\label{no-significant-differences-between-treatments-during-heatingrecovery-phase}}
+
+\hypertarget{monitpora}{%
+\subsection{MONITPORA}\label{monitpora}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Write different model options}
+  \CommentTok{\# Model 1 {-}different slope and different intercept}
+  \CommentTok{\# Model 2 {-} same slope and different intercept}
+  \CommentTok{\# Model 3 {-} global smoother assuming no treatment differences by day}
+
+\CommentTok{\# Note{-}allowing \textquotesingle{}k\textquotesingle{} to be set automatically by the model, we can adjust to increase or decrease the \textquotesingle{}wiggliness\textquotesingle{}}
+  
+\NormalTok{mc\_pam\_1 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day,}\AttributeTok{by=}\NormalTok{trt\_temp),}\AttributeTok{data=}\NormalTok{mc\_pam) }\CommentTok{\#interaction term smoothed by day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric coefficients:
+##                             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.4999926  0.0061506  81.292  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.0065100  0.0086982   0.748  0.45446    
+## trt_tempguano.Ambient      0.0160581  0.0086982   1.846  0.06531 .  
+## trt_tempinorganic.Ambient  0.0009851  0.0086982   0.113  0.90986    
+## trt_tempcontrol.Heated    -0.0489064  0.0087744  -5.574 3.61e-08 ***
+## trt_tempeffluent.Heated   -0.0217096  0.0089798  -2.418  0.01589 *  
+## trt_tempguano.Heated      -0.0260944  0.0088096  -2.962  0.00316 ** 
+## trt_tempinorganic.Heated  -0.0428315  0.0087222  -4.911 1.14e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F  p-value    
+## s(day):trt_tempcontrol.Ambient   1.000  1.000  0.260    0.610    
+## s(day):trt_tempeffluent.Ambient  1.000  1.000  0.498    0.480    
+## s(day):trt_tempguano.Ambient     1.000  1.000  0.706    0.401    
+## s(day):trt_tempinorganic.Ambient 1.000  1.000  0.026    0.871    
+## s(day):trt_tempcontrol.Heated    6.012  7.163  6.359  < 2e-16 ***
+## s(day):trt_tempeffluent.Heated   2.525  3.135  7.985 2.47e-05 ***
+## s(day):trt_tempguano.Heated      5.897  7.048  5.791 1.43e-06 ***
+## s(day):trt_tempinorganic.Heated  3.405  4.203 13.002  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.268   Deviance explained = 29.8%
+## GCV = 0.003554  Scale est. = 0.0034029  n = 702
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric Terms:
+##          df     F p-value
+## trt_temp  7 14.86  <2e-16
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F  p-value
+## s(day):trt_tempcontrol.Ambient   1.000  1.000  0.260    0.610
+## s(day):trt_tempeffluent.Ambient  1.000  1.000  0.498    0.480
+## s(day):trt_tempguano.Ambient     1.000  1.000  0.706    0.401
+## s(day):trt_tempinorganic.Ambient 1.000  1.000  0.026    0.871
+## s(day):trt_tempcontrol.Heated    6.012  7.163  6.359  < 2e-16
+## s(day):trt_tempeffluent.Heated   2.525  3.135  7.985 2.47e-05
+## s(day):trt_tempguano.Heated      5.897  7.048  5.791 1.43e-06
+## s(day):trt_tempinorganic.Heated  3.405  4.203 13.002  < 2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mc\_pam\_2 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{mc\_pam) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.500071   0.006555  76.294  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.006678   0.009269   0.720  0.47150    
+## trt_tempguano.Ambient      0.016244   0.009269   1.753  0.08013 .  
+## trt_tempinorganic.Ambient  0.001078   0.009269   0.116  0.90747    
+## trt_tempcontrol.Heated    -0.048724   0.009349  -5.211 2.48e-07 ***
+## trt_tempeffluent.Heated   -0.020473   0.009560  -2.141  0.03259 *  
+## trt_tempguano.Heated      -0.026623   0.009379  -2.839  0.00466 ** 
+## trt_tempinorganic.Heated  -0.043406   0.009295  -4.670 3.63e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(day) 7.389  8.371 7.359  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.169   Deviance explained = 18.6%
+## GCV = 0.0039528  Scale est. = 0.0038662  n = 702
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric Terms:
+##          df     F  p-value
+## trt_temp  7 13.22 4.87e-16
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value
+## s(day) 7.389  8.371 7.359  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mc\_pam\_3 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{mc\_pam) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.486011   0.002488   195.4   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(day) 7.122  8.172 6.572  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.0657   Deviance explained = 7.52%
+## GCV = 0.004395  Scale est. = 0.0043442  n = 702
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value
+## s(day) 7.122  8.172 6.572  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# compare models}
+\NormalTok{mc\_AIC }\OtherTok{\textless{}{-}} \FunctionTok{AIC}\NormalTok{ (mc\_pam\_1, mc\_pam\_2, mc\_pam\_3)}
+\FunctionTok{print}\NormalTok{(mc\_AIC) }\CommentTok{\# best option is mc\_pam\_1 (smallest AIC score) with the interaction term smoothed by day}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 df       AIC
+## mc_pam_1 30.838628 -1966.170
+## mc_pam_2 16.389202 -1890.545
+## mc_pam_3  9.121806 -1815.854
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot\_smooths for the model output on rawdata {-} needs a few formatting adjustments}
+\NormalTok{mc\_pam\_plot}\OtherTok{\textless{}{-}}
+  \FunctionTok{plot\_smooths}\NormalTok{(}
+  \AttributeTok{model =}\NormalTok{ mc\_pam\_1,}
+\AttributeTok{series =}\NormalTok{ day,}
+\AttributeTok{comparison=}\NormalTok{ trt\_temp,}
+\AttributeTok{ci\_z =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data=}\NormalTok{mc\_pam, }
+             \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{day, }\AttributeTok{y=}\NormalTok{FvFm, }\AttributeTok{color=}\NormalTok{trt\_temp)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{,}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Mcap PAM GAM"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"FvFm"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Day"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{mc\_pam\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\hypertarget{plot_differences-1}{%
+\subsection{Plot\_differences}\label{plot_differences-1}}
+
+\hypertarget{compare-each-treatment-to-their-heated-counterpart-1}{%
+\subsubsection{Compare each treatment to their heated
+counterpart}\label{compare-each-treatment-to-their-heated-counterpart-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of your comparisons}
+\NormalTok{comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_ca"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"control.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Control Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"gh\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"guano.Heated"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Guano Heated vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Inorganic Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Loop through each comparison to generate plots}
+\NormalTok{plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Initialize an empty list to store plots}
+
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ch\_ca,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{eh\_ea,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{gh\_ga,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ih\_ia,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ambient max 0.578, min 0.131}
+\CommentTok{\# heated max 0.574, min 0.047}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{heat-was-introduced-on-day-40-inorganic-started-diverging-on-day-30-effluent-on-day-32ish-while-control-and-guano-not-until-a-few-days-into-heating.-max-fvfm-value-in-dataset-was-0.578-and-min-was-0.047-total-range-of-0.531.-the-introduction-of-heat-approximately-decreased-fvfm-values-by-20.7-in-control-corals-13.2-in-effluent-corals-20.7-in-guano-corals-and-18.8-in-inorganic-corals.-percentages-found-by-looking-at-each-max-difference0.531.-eg-for-control-0.110.5310.207}{%
+\subsubsection{Heat was introduced on day 40, inorganic started
+diverging on day 30, effluent on day 32ish, while control and guano not
+until a few days into heating. Max FvFm value in dataset was 0.578 and
+min was 0.047, total range of 0.531. The introduction of heat
+approximately decreased FvFm values by 20.7\% in control corals, 13.2\%
+in effluent corals, 20.7\% in guano corals, and 18.8\% in inorganic
+corals. Percentages found by looking at each max difference/0.531. Eg
+for control
+0.11/0.531=0.207}\label{heat-was-introduced-on-day-40-inorganic-started-diverging-on-day-30-effluent-on-day-32ish-while-control-and-guano-not-until-a-few-days-into-heating.-max-fvfm-value-in-dataset-was-0.578-and-min-was-0.047-total-range-of-0.531.-the-introduction-of-heat-approximately-decreased-fvfm-values-by-20.7-in-control-corals-13.2-in-effluent-corals-20.7-in-guano-corals-and-18.8-in-inorganic-corals.-percentages-found-by-looking-at-each-max-difference0.531.-eg-for-control-0.110.5310.207}}
+
+\hypertarget{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm-1}{%
+\subsection{Difference in all ambient corals to see if treatment had an
+effect on
+FvFm}\label{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{amb\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Inorganic Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ea\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Guano Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{amb\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ amb\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    amb\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ia,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ea\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ga,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{the-only-difference-between-the-ambient-corals-was-control-and-guano-guano-corals-had-5.6-higher-fvfm-values-compared-to-control-corals-between-days-47-71.-the-max-value-for-ambient-corals-was-0.578-and-min-was-0.131-with-a-range-of-0.447.}{%
+\subsubsection{The only difference between the ambient corals was
+control and guano, guano corals had 5.6\% higher FvFm values compared to
+control corals between days 47-71. The max value for ambient corals was
+0.578 and min was 0.131 with a range of
+0.447.}\label{the-only-difference-between-the-ambient-corals-was-control-and-guano-guano-corals-had-5.6-higher-fvfm-values-compared-to-control-corals-between-days-47-71.-the-max-value-for-ambient-corals-was-0.578-and-min-was-0.131-with-a-range-of-0.447.}}
+
+\hypertarget{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm-1}{%
+\subsection{Difference in all heated corals to see if treatment x heat
+had an effect on
+FvFm}\label{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{heat\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ch"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"control.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Control Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Guano Heated"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{heat\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ heat\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_1,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    heat\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_ch,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{eh\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_gh,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# heated max 0.574, min 0.047}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{there-are-differenecs-between-treatments.-the-max-ambient-fvfm-value-is-0.574-and-min-is-0.047-the-range-of-values-is-0.527.-control-is-9.5-lower-than-effluent-days-10-19-and-50-67-9.5-lower-than-guano-briefly-on-day-75-and-9.5-higher-days-10-18-but-9.5-lower-days-32-42-than-inorganic.-inorganic-is-9.5-lower-than-effluent-days-40-65-and-14.2-lower-than-guano-days-25-48.-effluent-is-9.5-higher-than-guano-days-10-5-but-9.5-lower-than-guano-days-25-49.}{%
+\subsubsection{There are differenecs between treatments. The max ambient
+FvFm value is 0.574 and min is 0.047, the range of values is 0.527.
+Control is 9.5\% lower than effluent days 10-19 and 50-67, 9.5\% lower
+than guano briefly on day 75, and 9.5\% higher days 10-18 but 9.5\%
+lower days 32-42 than inorganic. Inorganic is 9.5\% lower than effluent
+(days 40-65) and 14.2\% lower than guano (days 25-48). Effluent is 9.5\%
+higher than guano days 10-5, but 9.5\% lower than guano days
+25-49.}\label{there-are-differenecs-between-treatments.-the-max-ambient-fvfm-value-is-0.574-and-min-is-0.047-the-range-of-values-is-0.527.-control-is-9.5-lower-than-effluent-days-10-19-and-50-67-9.5-lower-than-guano-briefly-on-day-75-and-9.5-higher-days-10-18-but-9.5-lower-days-32-42-than-inorganic.-inorganic-is-9.5-lower-than-effluent-days-40-65-and-14.2-lower-than-guano-days-25-48.-effluent-is-9.5-higher-than-guano-days-10-5-but-9.5-lower-than-guano-days-25-49.}}
+
+\hypertarget{the-montipora-data-is-a-little-squirly-which-i-think-is-due-to-colony-7-see-plot-below.-colony-6-is-also-crazy-however-the-ambient-corals-dont-have-as-much-variation-as-colony-7.-i-am-going-to-try-removing-colony-7-to-see-if-the-data-is-easier-to-interpret.}{%
+\section{The Montipora data is a little squirly, which I think is due to
+colony 7 (see plot below). Colony 6 is also crazy, however the ambient
+corals don't have as much variation as colony 7. I am going to try
+removing colony 7 to see if the data is easier to
+interpret.}\label{the-montipora-data-is-a-little-squirly-which-i-think-is-due-to-colony-7-see-plot-below.-colony-6-is-also-crazy-however-the-ambient-corals-dont-have-as-much-variation-as-colony-7.-i-am-going-to-try-removing-colony-7-to-see-if-the-data-is-easier-to-interpret.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot raw data by colony {-} regression line is added to see data trends}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{mc\_pam, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{day, }\AttributeTok{y=}\NormalTok{FvFm, }\AttributeTok{color=}\NormalTok{treatment, }\AttributeTok{linetype=}\NormalTok{temp)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{genotype)}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{se=}\NormalTok{F) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{))}\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\FunctionTok{expression}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Photochemical Efficiency of"}\NormalTok{, }\FunctionTok{phantom}\NormalTok{(x), }\FunctionTok{italic}\NormalTok{(}\StringTok{"Montipora capitata"}\NormalTok{))))}\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Day"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Fv/Fm"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{color=}\StringTok{"Treatment"}\NormalTok{,}\AttributeTok{linetype=}\StringTok{"Temperature"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.6}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+## : span too small.  fewer data values than degrees of freedom.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+## : pseudoinverse used at 6.895
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+## : neighborhood radius 15.105
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+## : reciprocal condition number 0
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,
+## : There are other near singularities as well. 171.74
+\end{verbatim}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter data to remove colony 7}
+\NormalTok{mc\_pam\_filter }\OtherTok{\textless{}{-}}\NormalTok{ mc\_pam }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(genotype }\SpecialCharTok{!=} \DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Write different model options}
+  \CommentTok{\# Model 1 {-}different slope and different intercept}
+  \CommentTok{\# Model 2 {-} same slope and different intercept}
+  \CommentTok{\# Model 3 {-} global smoother assuming no treatment differences by day}
+
+\CommentTok{\# Note{-}allowing \textquotesingle{}k\textquotesingle{} to be set automatically by the model, we can adjust to increase or decrease the \textquotesingle{}wiggliness\textquotesingle{}}
+  
+\NormalTok{mc\_pam\_4 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day,}\AttributeTok{by=}\NormalTok{trt\_temp),}\AttributeTok{data=}\NormalTok{mc\_pam\_filter) }\CommentTok{\#interaction term smoothed by day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.505749   0.005085  99.458  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.011354   0.007191   1.579 0.114911    
+## trt_tempguano.Ambient      0.016049   0.007191   2.232 0.026006 *  
+## trt_tempinorganic.Ambient  0.002169   0.007191   0.302 0.763056    
+## trt_tempcontrol.Heated    -0.043038   0.007265  -5.924 5.29e-09 ***
+## trt_tempeffluent.Heated   -0.025162   0.007292  -3.451 0.000598 ***
+## trt_tempguano.Heated      -0.025293   0.007240  -3.494 0.000512 ***
+## trt_tempinorganic.Heated  -0.043018   0.007191  -5.982 3.79e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F p-value    
+## s(day):trt_tempcontrol.Ambient   1.000  1.000  0.708   0.400    
+## s(day):trt_tempeffluent.Ambient  1.000  1.000  0.068   0.794    
+## s(day):trt_tempguano.Ambient     1.000  1.000  0.217   0.641    
+## s(day):trt_tempinorganic.Ambient 1.000  1.000  0.275   0.600    
+## s(day):trt_tempcontrol.Heated    5.306  6.419  7.960  <2e-16 ***
+## s(day):trt_tempeffluent.Heated   3.015  3.723 11.436  <2e-16 ***
+## s(day):trt_tempguano.Heated      5.824  6.973  8.038  <2e-16 ***
+## s(day):trt_tempinorganic.Heated  3.459  4.265 16.208  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =   0.36   Deviance explained =   39%
+## GCV = 0.0021702  Scale est. = 0.0020683  n = 631
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day, by = trt_temp)
+## 
+## Parametric Terms:
+##          df    F p-value
+## trt_temp  7 21.5  <2e-16
+## 
+## Approximate significance of smooth terms:
+##                                    edf Ref.df      F p-value
+## s(day):trt_tempcontrol.Ambient   1.000  1.000  0.708   0.400
+## s(day):trt_tempeffluent.Ambient  1.000  1.000  0.068   0.794
+## s(day):trt_tempguano.Ambient     1.000  1.000  0.217   0.641
+## s(day):trt_tempinorganic.Ambient 1.000  1.000  0.275   0.600
+## s(day):trt_tempcontrol.Heated    5.306  6.419  7.960  <2e-16
+## s(day):trt_tempeffluent.Heated   3.015  3.723 11.436  <2e-16
+## s(day):trt_tempguano.Heated      5.824  6.973  8.038  <2e-16
+## s(day):trt_tempinorganic.Heated  3.459  4.265 16.208  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mc\_pam\_5 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}}\NormalTok{ trt\_temp }\SpecialCharTok{+} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{mc\_pam\_filter) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric coefficients:
+##                            Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                0.505805   0.005485  92.210  < 2e-16 ***
+## trt_tempeffluent.Ambient   0.011388   0.007757   1.468  0.14262    
+## trt_tempguano.Ambient      0.016125   0.007757   2.079  0.03806 *  
+## trt_tempinorganic.Ambient  0.002188   0.007757   0.282  0.77805    
+## trt_tempcontrol.Heated    -0.042827   0.007833  -5.467 6.64e-08 ***
+## trt_tempeffluent.Heated   -0.024664   0.007861  -3.138  0.00178 ** 
+## trt_tempguano.Heated      -0.025476   0.007808  -3.263  0.00116 ** 
+## trt_tempinorganic.Heated  -0.043250   0.007757  -5.575 3.69e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(day) 4.567  5.582 17.05  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =  0.256   Deviance explained = 26.9%
+## GCV = 0.002456  Scale est. = 0.0024071  n = 631
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ trt_temp + s(day)
+## 
+## Parametric Terms:
+##          df     F p-value
+## trt_temp  7 18.49  <2e-16
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value
+## s(day) 4.567  5.582 17.05  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mc\_pam\_6 }\OtherTok{\textless{}{-}} \FunctionTok{gam}\NormalTok{(FvFm}\SpecialCharTok{\textasciitilde{}} \FunctionTok{s}\NormalTok{(day), }\AttributeTok{data=}\NormalTok{mc\_pam\_filter) }\CommentTok{\#interaction term and smoothed day}
+\FunctionTok{summary}\NormalTok{(mc\_pam\_6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Parametric coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.492742   0.002136   230.7   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value    
+## s(day) 4.273  5.236 14.86  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## R-sq.(adj) =   0.11   Deviance explained = 11.6%
+## GCV = 0.0029033  Scale est. = 0.0028791  n = 631
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova.gam}\NormalTok{(mc\_pam\_6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Family: gaussian 
+## Link function: identity 
+## 
+## Formula:
+## FvFm ~ s(day)
+## 
+## Approximate significance of smooth terms:
+##          edf Ref.df     F p-value
+## s(day) 4.273  5.236 14.86  <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# compare models}
+\NormalTok{mc\_AIC }\OtherTok{\textless{}{-}} \FunctionTok{AIC}\NormalTok{ (mc\_pam\_4, mc\_pam\_5, mc\_pam\_6)}
+\FunctionTok{print}\NormalTok{(mc\_AIC) }\CommentTok{\# best option is mc\_pam\_4 (smallest AIC score) with the interaction term smoothed by day}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 df       AIC
+## mc_pam_4 30.603818 -2078.630
+## mc_pam_5 13.567295 -1999.374
+## mc_pam_6  6.273238 -1893.583
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot\_smooths for the model output on rawdata {-} needs a few formatting adjustments}
+\NormalTok{mc\_pam\_plot\_2}\OtherTok{\textless{}{-}}
+  \FunctionTok{plot\_smooths}\NormalTok{(}
+  \AttributeTok{model =}\NormalTok{ mc\_pam\_4,}
+\AttributeTok{series =}\NormalTok{ day,}
+\AttributeTok{comparison=}\NormalTok{ trt\_temp,}
+\AttributeTok{ci\_z =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data=}\NormalTok{mc\_pam\_filter, }
+             \FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{day, }\AttributeTok{y=}\NormalTok{FvFm, }\AttributeTok{color=}\NormalTok{trt\_temp)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{,}\StringTok{"\#08b5d3"}\NormalTok{,}\StringTok{"\#e12618"}\NormalTok{,}\StringTok{"\#01ad74"}\NormalTok{,}\StringTok{"\#d9a33a"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Mcap PAM GAM"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"FvFm"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Day"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{mc\_pam\_plot\_2}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-20-1.pdf} \#\#
+Plot\_differences
+
+\hypertarget{compare-each-treatment-to-their-heated-counterpart-2}{%
+\subsubsection{Compare each treatment to their heated
+counterpart}\label{compare-each-treatment-to-their-heated-counterpart-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of your comparisons}
+\NormalTok{comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_ca"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"control.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Control Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"gh\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"guano.Heated"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Guano Heated vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Inorganic Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Loop through each comparison to generate plots}
+\NormalTok{plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()  }\CommentTok{\# Initialize an empty list to store plots}
+
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_4,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ch\_ca,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{eh\_ea,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{gh\_ga,}
+\NormalTok{  plots}\SpecialCharTok{$}\NormalTok{ih\_ia,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-21-1.pdf}
+\#\#\# Heat was introduced on day 40, inorganic and effluent started
+diverging on day 30, while control was at day 40 and guano not until a
+few days into heating. Max FvFm value in dataset was 0.578 and min was
+0.141, total range of 0.437. The introduction of heat approximately
+decreased FvFm values by 20.5\% in control corals, 17.2\% in effluent
+corals, 22.9\% in guano corals, and 22.9\% in inorganic corals.
+Percentages found by looking at each max difference/0.437. Eg for
+control 0.09/0.437=0.205
+
+\hypertarget{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm-2}{%
+\subsection{Difference in all ambient corals to see if treatment had an
+effect on
+FvFm}\label{difference-in-all-ambient-corals-to-see-if-treatment-had-an-effect-on-fvfm-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{amb\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ca\_ia"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Ambient"}\NormalTok{, }\StringTok{"inorganic.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Ambient vs. Inorganic Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ea\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Ambient vs. Guano Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ea"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"effluent.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Effluent Ambient"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ia\_ga"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Ambient"}\NormalTok{, }\StringTok{"guano.Ambient"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Ambient vs. Guano Ambient"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{amb\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ amb\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_4,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    amb\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ca\_ia,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ea\_ga,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ea,}
+\NormalTok{  amb\_plots}\SpecialCharTok{$}\NormalTok{ia\_ga,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\hypertarget{the-only-difference-between-the-ambient-corals-was-guano-vs-control-and-ambient-guano-corals-had-9-higher-fvfm-values-compared-to-control-corals-between-days-40-80-and-5.1-higher-fvfm-values-than-inorganic-corals-days-45-62.-the-max-value-for-ambient-corals-was-0.578-and-min-was-0.297-with-a-range-of-0.281.}{%
+\subsubsection{The only difference between the ambient corals was guano
+vs control and ambient, guano corals had 9\% higher FvFm values compared
+to control corals between days 40-80 and 5.1\% higher FvFm values than
+inorganic corals days 45-62. The max value for ambient corals was 0.578
+and min was 0.297 with a range of
+0.281.}\label{the-only-difference-between-the-ambient-corals-was-guano-vs-control-and-ambient-guano-corals-had-9-higher-fvfm-values-compared-to-control-corals-between-days-40-80-and-5.1-higher-fvfm-values-than-inorganic-corals-days-45-62.-the-max-value-for-ambient-corals-was-0.578-and-min-was-0.297-with-a-range-of-0.281.}}
+
+\hypertarget{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm-2}{%
+\subsection{Difference in all heated corals to see if treatment x heat
+had an effect on
+FvFm}\label{difference-in-all-heated-corals-to-see-if-treatment-x-heat-had-an-effect-on-fvfm-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define a list of the new comparisons}
+\NormalTok{heat\_comparisons }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ch\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"control.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Control Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_ch"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"control.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Control Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"eh\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"effluent.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Effluent Heated vs. Guano Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_eh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"effluent.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Effluent Heated"}\NormalTok{),}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{name =} \StringTok{"ih\_gh"}\NormalTok{, }\AttributeTok{difference =} \FunctionTok{c}\NormalTok{(}\StringTok{"inorganic.Heated"}\NormalTok{, }\StringTok{"guano.Heated"}\NormalTok{), }\AttributeTok{title =} \StringTok{"Inorganic Heated vs. Guano Heated"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Initialize an empty list to store the new plots}
+\NormalTok{heat\_plots }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+
+\CommentTok{\# Loop through each new comparison to generate plots}
+\ControlFlowTok{for}\NormalTok{ (comp }\ControlFlowTok{in}\NormalTok{ heat\_comparisons) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}} \FunctionTok{plot\_difference}\NormalTok{(}
+\NormalTok{    mc\_pam\_4,}
+    \AttributeTok{series =}\NormalTok{ day,}
+    \AttributeTok{difference =} \FunctionTok{list}\NormalTok{(}\AttributeTok{trt\_temp =}\NormalTok{ comp}\SpecialCharTok{$}\NormalTok{difference)}
+\NormalTok{  ) }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(comp}\SpecialCharTok{$}\NormalTok{title)}
+\NormalTok{    heat\_plots[[comp}\SpecialCharTok{$}\NormalTok{name]] }\OtherTok{\textless{}{-}}\NormalTok{ plot}
+\NormalTok{\}}
+
+
+\CommentTok{\# Display plots}
+\FunctionTok{grid.arrange}\NormalTok{(}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ch\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_ch,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{eh\_gh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_eh,}
+\NormalTok{  heat\_plots}\SpecialCharTok{$}\NormalTok{ih\_gh,}
+  \AttributeTok{ncol =} \DecValTok{2}  
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{PAM-GAM_files/figure-latex/unnamed-chunk-23-1.pdf}
+\#\#\# There are differenecs between treatments. The max ambient FvFm
+value is 0.574 and min is 0.141, the range of values is 0.433. Control
+is 8.7\% lower than effluent days 10-19 and 52-62, no different than
+guano or inorganic. Inorganic is 6.8\% lower than effluent (days 50-67)
+and 16.2\% lower than guano (days 25-48). Effluent is 5.8\% higher than
+guano days 10-12, but 11.5\% lower than guano days 25-48 and 72-76.
+
+\hypertarget{overall-interpreation-of-montipora-heat-decreased-fvfm-in-all-treatments-from-17.2-in-effluent-corals-to-22.9-in-guano-and-inorganic-corals.-in-ambient-corals-guano-supported-slightly-5-9-higher-fvfm-values-than-inorganic-or-control-corals-respectively.-the-interaction-of-heat-x-treatment-caused-control-corals-to-be-significantly-lower-8.7-than-effluent-corals-but-no-different-from-guano-or-inorganic-corals.-effluent-and-guano-were-significantly-higher-than-inorganic-corals-6.8-and-16.2-respectively.-guano-corals-were-11.5-higher-than-effluent-corals-before-heating-but-no-different-duringafter-heating.}{%
+\subsection{Overall interpreation of Montipora: Heat decreased FvFm in
+all treatments from 17.2\% in effluent corals to 22.9\% in guano and
+inorganic corals. In ambient corals, guano supported slightly (5-9\%)
+higher FvFm values than inorganic or control corals, respectively. The
+interaction of heat x treatment caused control corals to be
+significantly lower (8.7\%) than effluent corals, but no different from
+guano or inorganic corals. Effluent and guano were significantly higher
+than inorganic corals (6.8\% and 16.2\%, respectively). Guano corals
+were 11.5\% higher than effluent corals BEFORE heating, but no different
+during/after
+heating.}\label{overall-interpreation-of-montipora-heat-decreased-fvfm-in-all-treatments-from-17.2-in-effluent-corals-to-22.9-in-guano-and-inorganic-corals.-in-ambient-corals-guano-supported-slightly-5-9-higher-fvfm-values-than-inorganic-or-control-corals-respectively.-the-interaction-of-heat-x-treatment-caused-control-corals-to-be-significantly-lower-8.7-than-effluent-corals-but-no-different-from-guano-or-inorganic-corals.-effluent-and-guano-were-significantly-higher-than-inorganic-corals-6.8-and-16.2-respectively.-guano-corals-were-11.5-higher-than-effluent-corals-before-heating-but-no-different-duringafter-heating.}}
+
+\hypertarget{linear-mixed-effects-model-on-just-heated-corals-from-day-40---80-start-of-heating-to-end-of-experiment-1}{%
+\subsection{Linear Mixed Effects Model on just heated corals from day 40
+- 80 (start of heating to end of
+experiment)}\label{linear-mixed-effects-model-on-just-heated-corals-from-day-40---80-start-of-heating-to-end-of-experiment-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# filter dataset}
+\NormalTok{mc\_heat }\OtherTok{\textless{}{-}}\NormalTok{ mc\_pam [mc\_pam}\SpecialCharTok{$}\NormalTok{temp }\SpecialCharTok{==} \StringTok{"Heated"}\NormalTok{,]}
+\NormalTok{mc\_heat }\OtherTok{\textless{}{-}}\NormalTok{ mc\_heat }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(day }\SpecialCharTok{\textgreater{}=} \DecValTok{40}\NormalTok{)}
+
+
+\CommentTok{\#lme}
+\NormalTok{mc\_heat\_lme }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(FvFm }\SpecialCharTok{\textasciitilde{}}\NormalTok{ treatment }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{genotype) }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{ID), }\AttributeTok{data=}\NormalTok{mc\_heat)}
+\FunctionTok{summary}\NormalTok{(mc\_heat\_lme)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: FvFm ~ treatment + (1 | genotype) + (1 | ID)
+##    Data: mc_heat
+## 
+## REML criterion at convergence: -538
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -5.7413 -0.3748  0.0217  0.4554  3.1931 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  ID       (Intercept) 0.000851 0.02917 
+##  genotype (Intercept) 0.002160 0.04647 
+##  Residual             0.002636 0.05134 
+## Number of obs: 198, groups:  ID, 35; genotype, 9
+## 
+## Fixed effects:
+##                     Estimate Std. Error        df t value Pr(>|t|)    
+## (Intercept)         0.419431   0.019690 14.459755  21.301 2.52e-12 ***
+## treatmenteffluent   0.026135   0.017891 23.900064   1.461    0.157    
+## treatmentguano      0.024058   0.017200 23.539242   1.399    0.175    
+## treatmentinorganic  0.001065   0.017093 23.057388   0.062    0.951    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) trtmntf trtmntg
+## trtmntfflnt -0.420                
+## treatmentgn -0.436  0.482         
+## trtmntnrgnc -0.439  0.485   0.502
+\end{verbatim}
+
+\hypertarget{no-treatment-differences-during-heatingrecovery-phases}{%
+\subsubsection{No treatment differences during heating/recovery
+phases}\label{no-treatment-differences-during-heatingrecovery-phases}}
+
+\end{document}
