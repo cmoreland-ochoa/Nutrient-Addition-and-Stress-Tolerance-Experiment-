@@ -1,0 +1,108 @@
+---
+title: "Naste Nutrient Analysis"
+author: "Jessica Glazner"
+date: "2024-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+#load libraries
+library(tidyverse)
+
+#load data
+nuts <- read.csv("C:\\Users\\jglaz\\Desktop\\NASTE\\DATA\\water_nuts.csv")
+```
+
+## Data Wrangling
+
+```{r}
+# add a TIN (total inorganic nitrogen) column by adding N+N and ammonia columns
+nuts <- nuts %>%
+  mutate(TIN = N.N + Ammonia)
+
+# add a N:P column from TN/TP
+
+nuts <- nuts %>%
+  mutate(N_to_P = TN / TP)
+
+```
+
+## Set plot theme and colors
+```{r}
+ # All of the following plots will follow this theme
+theme_set(
+  theme_minimal(base_size = 15) +                             # Set base theme
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),    # Customize title
+      axis.title = element_text(size = 15),                   # Customize axis titles
+      axis.text = element_text(size = 15),                    # Customize axis text
+      legend.title = element_text(size = 15),                 # Customize legend title
+      legend.text = element_text(size = 15)                  # Customize legend text
+    )
+)
+
+
+# Define colors for the treatments
+naste_colors <- c("Control" = "#08b5d3",  
+               "Effluent" = "#e12618",   
+               "Guano" = "#01ad74",   
+               "Inorganic" = "#d9a33a")  
+
+```
+
+
+
+
+## TIN Plots
+
+### Dosing
+```{r}
+# Violin Plot - TIN pooled at all timepoints
+ggplot()+
+  geom_violin(data=subset(nuts, Tank %in% c("Dosing")),
+            aes(x=Treatment, y=TIN, fill=Treatment))+
+  facet_wrap(~Species, ncol = 1) +
+  geom_jitter()+
+  ggtitle("Dosing Container Inorganic Nitrogen Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of TIN
+ggplot()+
+  geom_line(data=subset(nuts, Tank %in% c("Dosing")),
+            aes(x=Timepoint, y=TIN, group=Treatment, color=Treatment), size = 1)+
+  facet_wrap(~Species, ncol = 1)+
+  ggtitle("Dosing Container Inorganic Nitrogen Concentrations")+
+  scale_color_manual(values= naste_colors)
+
+```
+### Treatment Aquaria
+```{r}
+# Violin Plot - TIN pooled at all timepoints
+ggplot()+
+  geom_violin(data=subset(nuts, Tank %in% c("Aquaria")),
+            aes(x=Treatment, y=TIN, fill=Treatment))+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter()+
+  ggtitle("Treatment Aquaria Inorganic Nitrogen Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of TIN
+ggplot()+
+  geom_line(data=subset(nuts, Tank %in% c("Aquaria")),
+            aes(x=Timepoint, y=TIN, group=Treatment, color=Treatment), size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria Inorganic Nitrogen Concentrations")+
+  scale_color_manual(values= naste_colors)
+```
+
+

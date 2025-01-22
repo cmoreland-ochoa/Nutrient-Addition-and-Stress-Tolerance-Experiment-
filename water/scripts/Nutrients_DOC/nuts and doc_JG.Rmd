@@ -1,0 +1,1476 @@
+---
+title: "Naste Nutrient Analysis"
+author: "Jessica Glazner"
+date: "2024-11-09"
+output:
+  html_document: default
+  pdf_document: default
+  keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Summary of findings: 
+#### TIN: dosing - G and E same, all others different, aquaria - all treatments the same. While initial treatments had different [TIN], the corals drew TIN down to same level within tanks no matter delivery concentration.
+#### PO4: dosing - Porites were all different but Montipora had e/g and c/i and e/i similar [PO4], aquaria - all treatments the same except G which was higher. Drawdown of PO4 occured, but likely P limitation in 3 treatments, only G had more P than could be drawndown
+#### N:P: dosing - C = E but all other comparisons are different. I has higher N:P and G has lower N:P, aquaria - G different from all treatments, but all other treatments similar. 
+```{r}
+#load libraries
+library(tidyverse)
+library(lme4)
+library(emmeans)
+
+#load data
+nuts <- read.csv("C:\\Users\\jglaz\\Desktop\\NASTE\\DATA\\water_nuts.csv")
+doc <- read.csv("C:\\Users\\jglaz\\Desktop\\NASTE\\DATA\\DOC.csv")
+
+```
+
+## Nut Data Wrangling
+
+```{r}
+# add a TIN (total inorganic nitrogen) column by adding N+N and ammonia columns
+nuts <- nuts %>%
+  mutate(TIN = N.N + Ammonia)
+
+# add a N:P column from TN/TP
+
+nuts <- nuts %>%
+  mutate(N_to_P = TN / TP)
+
+# add a TIN:PO4 column from TIN/PO4
+
+nuts <- nuts %>%
+  mutate(TIN_to_PO4 = TIN/Phosphate)
+
+
+nuts$Tank <- as.factor(nuts$Tank)
+
+mc_nuts <- nuts[nuts$Species == "Montipora",]
+pc_nuts <- nuts[nuts$Species == "Porites",]
+mc_doc <- doc[doc$Species == "Montipora",]
+pc_doc <- doc[doc$Species == "Porites",]
+```
+
+
+```{r}
+
+write.csv(nuts, file="C:\\Users\\jglaz\\Desktop\\NASTE\\DATA\\naste_nuts.csv")
+```
+
+## DOC Data Wrangling
+
+```{r}
+# remove 2 oultliers
+doc <- doc %>%
+  mutate(NPOC_uM = if_else(SLAB.ID %in% c(31, 46), NA_real_, NPOC_uM))
+```
+
+
+## Set plot theme and colors
+```{r}
+ # All of the following plots will follow this theme
+theme_set(
+  theme_minimal(base_size = 15) +                             # Set base theme
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),    # Customize title
+      axis.title = element_text(size = 15),                   # Customize axis titles
+      axis.text = element_text(size = 15),                    # Customize axis text
+      legend.title = element_text(size = 15),                 # Customize legend title
+      legend.text = element_text(size = 15)                  # Customize legend text
+    )
+)
+
+
+# Define colors for the treatments
+naste_colors <- c("Control" = "#08b5d3",  
+               "Effluent" = "#e12618",   
+               "Guano" = "#01ad74",   
+               "Inorganic" = "#d9a33a")  
+
+```
+
+
+
+
+# TIN 
+
+### Dosing
+```{r}
+# Violin Plot - TIN pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=TIN, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container Inorganic Nitrogen Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TIN")
+
+
+# Line Plot - to show time series of TIN
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=TIN, group=Treatment, color=Treatment))+
+  geom_line(size=1)+
+  facet_wrap(~Species, ncol = 1)+
+  ggtitle("Dosing Container Inorganic Nitrogen Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TIN")
+
+
+```
+
+### Analysis of TIN in Dosing - linear model
+```{r}
+# pooled Montipora and Porites
+TIN_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TIN) ~ Treatment, data = .)
+summary(TIN_dosing)
+
+emm_tin<- emmeans(TIN_dosing, ~ Treatment)
+emm_tin
+pair_tin<- contrast(emm_tin, method='pairwise')
+summary(pair_tin)
+# Guano and Effluent are similar, all other treatments differ from each other
+
+# Montipora 
+TIN_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TIN) ~ Treatment, data = .)
+summary(TIN_dosing_m)
+
+emm_tin_m<- emmeans(TIN_dosing_m, ~ Treatment)
+emm_tin_m
+pair_tin_m<- contrast(emm_tin_m, method='pairwise')
+summary(pair_tin_m)
+# Guano and Effluent are similar, all other treatments differ from each other
+
+# Porites
+TIN_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TIN) ~ Treatment, data = .)
+summary(TIN_dosing_p)
+
+emm_tin_p<- emmeans(TIN_dosing_p, ~ Treatment)
+emm_tin_p
+pair_tin_p<- contrast(emm_tin_p, method='pairwise')
+summary(pair_tin_p)
+# Guano and Effluent are similar, all other treatments differ from each other
+
+# Pooled and separated data have same results
+```
+
+### Treatment Aquaria
+```{r}
+# Violin Plot - TIN pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=TIN, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria Inorganic Nitrogen Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TIN")
+
+
+# Line Plot - to show time series of TIN
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=TIN, group=Treatment, color=Treatment))+
+  geom_line(size=1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria Inorganic Nitrogen Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TIN")
+
+```
+
+### Analysis of TIN in aquaria - LME
+```{r}
+# Pooled Montipora and Porites
+TIN_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TIN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TIN_aquaria)
+
+emm_tin_a<- emmeans(TIN_aquaria, ~ Treatment)
+emm_tin_a
+pair_tin_a<- contrast(emm_tin_a, method='pairwise')
+summary(pair_tin_a)
+# no differences across treatments through time - indicates all tanks drew down TIN to same level
+
+# Montipora
+TIN_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TIN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TIN_aquaria_m)
+
+emm_tin_a_m<- emmeans(TIN_aquaria_m, ~ Treatment)
+emm_tin_a_m
+pair_tin_a_m<- contrast(emm_tin_a_m, method='pairwise')
+summary(pair_tin_a_m)
+# no differences across treatments through time - indicates all tanks drew down TIN to same level
+
+
+TIN_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TIN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TIN_aquaria_p)
+
+emm_tin_a_p<- emmeans(TIN_aquaria_p, ~ Treatment)
+emm_tin_a_p
+pair_tin_a_p<- contrast(emm_tin_a_p, method='pairwise')
+summary(pair_tin_a_p)
+# no differences across treatments through time - indicates all tanks drew down TIN to same level
+
+# Pooled and separated data have same results
+```
+
+
+# N+N
+
+## Dosing 
+```{r}
+
+# Violin Plot - N+N pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=N.N, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container N + N Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 N+N")
+
+
+# Line Plot - to show time series of N+N
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=N.N, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container N + N Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 N+N")
+
+
+```
+
+### Analysis of N+N in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites together
+N.N_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(N.N) ~ Treatment, data = .)
+summary(N.N_dosing)
+
+emm_nn<- emmeans(N.N_dosing, ~ Treatment)
+emm_nn
+pair_nn<- contrast(emm_nn, method='pairwise')
+summary(pair_nn)
+# Effluent different from inorganic, similar to control and guano. Other 3 treatments are similar.
+
+# Montipora
+N.N_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(N.N) ~ Treatment, data = .)
+summary(N.N_dosing_m)
+
+emm_nn_m<- emmeans(N.N_dosing_m, ~ Treatment)
+emm_nn_m
+pair_nn_m<- contrast(emm_nn_m, method='pairwise')
+summary(pair_nn_m)
+
+# Effluent comes up different in model summary but not in post-hoc comparison. Everything else similar
+
+# Porites
+N.N_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(N.N) ~ Treatment, data = .)
+summary(N.N_dosing_p)
+
+emm_nn_p<- emmeans(N.N_dosing_p, ~ Treatment)
+emm_nn_p
+pair_nn_p<- contrast(emm_nn_p, method='pairwise')
+summary(pair_nn_p)
+
+# All treatments similar.
+
+
+# The Montipora effluent dosing container is significantly different in model but not in emmeans post hoc test. Otherwise, pooled and separated data is the same.
+```
+
+### Treatment Aquaria
+```{r}
+# Violin Plot - N + N pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=N.N, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria N + N Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 N+N")
+
+
+# Line Plot - to show time series of N + N
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=N.N, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria N + N Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 N+N")
+
+```
+
+### Analysis of N+N in aquaria - LME
+```{r}
+# Pooled Montipora and Porites
+N.N_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(N.N) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(N.N_aquaria)
+
+emm_nn_a<- emmeans(N.N_aquaria, ~ Treatment)
+emm_nn_a
+pair_nn_a<- contrast(emm_nn_a, method='pairwise')
+summary(pair_nn_a)
+# no differences across treatments through time - indicates all tanks drew down N+N to same level
+
+# Montipora
+N.N_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(N.N) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(N.N_aquaria_m)
+
+emm_nn_a_m<- emmeans(N.N_aquaria_m, ~ Treatment)
+emm_nn_a_m
+pair_nn_a_m<- contrast(emm_nn_a_m, method='pairwise')
+summary(pair_nn_a_m)
+# no differences across treatments through time - indicates all tanks drew down N+N to same level
+
+# Porites
+N.N_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(N.N) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(N.N_aquaria_p)
+
+emm_nn_a_p<- emmeans(N.N_aquaria_p, ~ Treatment)
+emm_nn_a_p
+pair_nn_a_p<- contrast(emm_nn_a_p, method='pairwise')
+summary(pair_nn_a_p)
+# no differences across treatments through time - indicates all tanks drew down N+N to same level
+
+# Results the same for pooled and separated data
+```
+
+
+
+# NO4
+
+### Dosing
+
+```{r}
+
+# Violin Plot - NH4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=Ammonia, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container NH4 Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 NO4")
+
+
+# Line Plot - to show time series of NH4
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=Ammonia, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container NH4 Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 NO4")
+
+
+```
+
+### Analysis of NO4 in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+NO4_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Ammonia) ~ Treatment, data = .)
+summary(NO4_dosing)
+
+emm_no4<- emmeans(NO4_dosing, ~ Treatment)
+emm_no4
+pair_no4<- contrast(emm_no4, method='pairwise')
+summary(pair_no4)
+# Effluent and guano similar, but all other treatment comparisons are different. 
+
+# Montipora
+NO4_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Ammonia) ~ Treatment, data = .)
+summary(NO4_dosing_m)
+
+emm_no4_m<- emmeans(NO4_dosing_m, ~ Treatment)
+emm_no4_m
+pair_no4_m<- contrast(emm_no4_m, method='pairwise')
+summary(pair_no4_m)
+# Effluent and guano similar, effluent and inorganic similar, but control different from all and guano different from inorganic. 
+
+
+
+# Porites
+NO4_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Ammonia) ~ Treatment, data = .)
+summary(NO4_dosing_p)
+
+emm_no4_p<- emmeans(NO4_dosing_p, ~ Treatment)
+emm_no4_p
+pair_no4_p<- contrast(emm_no4_p, method='pairwise')
+summary(pair_no4_p)
+# Effluent and guano similar, effluent and inorganic similar, but control different from all and guano different from inorganic. 
+
+# Pooled data indicates only effluent and guano similar, but separated data show that effluent/inorganic and guano/inorganic are also similar among species.
+```
+
+### Treatment Aquaria
+```{r}
+# Violin Plot - NH4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=Ammonia, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria NH4 Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 NO4")
+
+
+# Line Plot - to show time series of NH4
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=Ammonia, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria NH4 Concentrations")+
+  scale_color_manual(values= naste_colors)+  
+  scale_y_continuous(trans = "log10", name = "Log10 NO4")
+
+```
+
+### Analysis of NO4 in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+NO4_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Ammonia) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NO4_aquaria)
+
+emm_no4_a<- emmeans(NO4_aquaria, ~ Treatment)
+emm_no4_a
+pair_no4_a<- contrast(emm_no4_a, method='pairwise')
+summary(pair_no4_a)
+# no differences across treatments through time - indicates all tanks drew down NO4 to same level
+
+#Montipora
+NO4_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Ammonia) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NO4_aquaria_m)
+
+emm_no4_a_m<- emmeans(NO4_aquaria_m, ~ Treatment)
+emm_no4_a_m
+pair_no4_a_m<- contrast(emm_no4_a_m, method='pairwise')
+summary(pair_no4_a_m)
+# no differences across treatments through time - indicates all tanks drew down NO4 to same level
+
+# Porites
+NO4_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Ammonia) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NO4_aquaria_p)
+
+emm_no4_a_p<- emmeans(NO4_aquaria_p, ~ Treatment)
+emm_no4_a_p
+pair_no4_a_p<- contrast(emm_no4_a_p, method='pairwise')
+summary(pair_no4_a_p)
+# model summary indicates effluent and T2 are significantly different (than control and T1), but no difference detected in post hoc test
+
+
+# Slight difference in species, effluent different from control and T2 different from T1 for Porites, however no differences detected in Montipora data
+```
+
+
+# PO4
+
+### Dosing
+```{r}
+
+# Violin Plot - PO4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=Phosphate, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container PO4 Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 PO4")
+
+
+# Line Plot - to show time series of PO4
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=Phosphate, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container PO4 Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 PO4")
+
+
+```
+
+### Analysis of PO4 in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+PO4_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Phosphate) ~ Treatment, data = .)
+summary(PO4_dosing)
+
+emm_po4<- emmeans(PO4_dosing, ~ Treatment)
+emm_po4
+pair_po4<- contrast(emm_po4, method='pairwise')
+summary(pair_po4)
+# Everybody has different PO4 levels in dosing containers 
+
+# Montipora
+PO4_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Phosphate) ~ Treatment, data = .)
+summary(PO4_dosing_m)
+
+emm_po4_m<- emmeans(PO4_dosing_m, ~ Treatment)
+emm_po4_m
+pair_po4_m<- contrast(emm_po4_m, method='pairwise')
+summary(pair_po4_m)
+# Effluent/guano and control/inorganic similar, but all others different (and effluent/inorganic borderline at p=0.0543)
+
+# Porites
+PO4_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(Phosphate) ~ Treatment, data = .)
+summary(PO4_dosing_p)
+
+emm_po4_p<- emmeans(PO4_dosing_p, ~ Treatment)
+emm_po4_p
+pair_po4_p<- contrast(emm_po4_p, method='pairwise')
+summary(pair_po4_p)
+# All treatments different from each other
+
+# Difference between species, Porites were all different but Montipora had e/g and c/i and e/i similar PO4 concentrations
+```
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - PO4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=Phosphate, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria PO4 Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 PO4")
+
+
+# Line Plot - to show time series of PO4
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=Phosphate, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria PO4 Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 PO4")
+
+```
+
+### Analysis of PO4 in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+PO4_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Phosphate) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(PO4_aquaria)
+
+emm_po4_a<- emmeans(PO4_aquaria, ~ Treatment)
+emm_po4_a
+pair_po4_a<- contrast(emm_po4_a, method='pairwise')
+summary(pair_po4_a)
+# Guano different than all other treatments, but other 3 treatments are all similar.
+
+# Montipora
+PO4_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Phosphate) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(PO4_aquaria_m)
+
+emm_po4_a_m<- emmeans(PO4_aquaria_m, ~ Treatment)
+emm_po4_a_m
+pair_po4_a_m<- contrast(emm_po4_a_m, method='pairwise')
+summary(pair_po4_a_m)
+# Guano different than all other treatments, but other 3 treatments are all similar.
+
+# Porites
+PO4_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(Phosphate) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(PO4_aquaria_p)
+
+emm_po4_a_p<- emmeans(PO4_aquaria_p, ~ Treatment)
+emm_po4_a_p
+pair_po4_a_p<- contrast(emm_po4_a_p, method='pairwise')
+summary(pair_po4_a_p)
+# Guano different than all other treatments, but other 3 treatments are all similar.
+
+
+# Same results between pooled and separated data
+```
+
+# TN
+
+### Dosing
+
+
+```{r}
+
+# Violin Plot - TN pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")),aes(x=Treatment, y=TN, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container TN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of TN
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=TN, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container TN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+```
+
+### Analysis of TN in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+TN_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN) ~ Treatment, data = .)
+summary(TN_dosing)
+
+emm_tn<- emmeans(TN_dosing, ~ Treatment)
+emm_tn
+pair_tn<- contrast(emm_tn, method='pairwise')
+summary(pair_tn)
+# Effluent and guano similar, all other comparisons different
+
+# Montipora
+TN_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN) ~ Treatment, data = .)
+summary(TN_dosing_m)
+
+emm_tn_m<- emmeans(TN_dosing_m, ~ Treatment)
+emm_tn_m
+pair_tn_m<- contrast(emm_tn_m, method='pairwise')
+summary(pair_tn_m)
+# Effluent and guano similar, all other comparisons different
+
+# Porites
+TN_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN) ~ Treatment, data = .)
+summary(TN_dosing_p)
+
+emm_tn_p<- emmeans(TN_dosing_p, ~ Treatment)
+emm_tn_p
+pair_tn_p<- contrast(emm_tn_p, method='pairwise')
+summary(pair_tn_p)
+# Effluent and guano similar, all other comparisons different
+
+# Same results pooled vs separated data
+```
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - TN pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=TN, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria TN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of TN
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=TN, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria TN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+```
+
+### Analysis of TN in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+TN_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN_aquaria)
+
+emm_tn_a<- emmeans(TN_aquaria, ~ Treatment)
+emm_tn_a
+pair_tn_a<- contrast(emm_tn_a, method='pairwise')
+summary(pair_tn_a)
+# no differences across treatments through time - indicates all tanks drew down TN to same level 
+
+# Montipora
+TN_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN_aquaria_m)
+
+emm_tn_a_m<- emmeans(TN_aquaria_m, ~ Treatment)
+emm_tn_a_m
+pair_tn_a_m<- contrast(emm_tn_a_m, method='pairwise')
+summary(pair_tn_a_m)
+# no differences across treatments through time - indicates all tanks drew down TN to same level 
+
+# Porites
+TN_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN_aquaria_p)
+
+emm_tn_a_p<- emmeans(TN_aquaria_p, ~ Treatment)
+emm_tn_a_p
+pair_tn_a_p<- contrast(emm_tn_a_p, method='pairwise')
+summary(pair_tn_a_p)
+# no differences across treatments through time - indicates all tanks drew down TN to same level 
+
+# Same results pooled vs separated data
+```
+
+# TP
+
+### Dosing
+
+```{r}
+
+# Violin Plot - TP pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=TP, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container TP Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TP")
+
+
+# Line Plot - to show time series of TP
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=TP, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container TP Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TP")
+
+
+```
+### Analysis of TP in Dosing - linear model
+```{r}
+# Pooled Montipora vs Porites data
+TP_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TP) ~ Treatment, data = .)
+summary(TP_dosing)
+
+emm_tp<- emmeans(TP_dosing, ~ Treatment)
+emm_tp
+pair_tp<- contrast(emm_tp, method='pairwise')
+summary(pair_tp)
+# Control = Inorganic, Effluent and  Guano different from all treatments
+
+# Montipora
+TP_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TP) ~ Treatment, data = .)
+summary(TP_dosing_m)
+
+emm_tp_m<- emmeans(TP_dosing_m, ~ Treatment)
+emm_tp_m
+pair_tp_m<- contrast(emm_tp_m, method='pairwise')
+summary(pair_tp_m)
+# Control = Inorganic, Effluent and  Guano different from all treatments
+
+# Porites
+TP_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TP) ~ Treatment, data = .)
+summary(TP_dosing_p)
+
+emm_tp_p<- emmeans(TP_dosing_p, ~ Treatment)
+emm_tp_p
+pair_tp_p<- contrast(emm_tp_p, method='pairwise')
+summary(pair_tp_p)
+# Control = Inorganic, Effluent and  Guano different from all treatments
+
+# Same results pooled vs separated data
+```
+
+```{r}
+# Violin Plot - TP pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=TP, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria TP Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TP")
+
+
+# Line Plot - to show time series of TP
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=TP, group=Treatment, color=Treatment), )+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria TP Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TP")
+
+```
+
+### Analysis of TP in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+TP_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TP) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TP_aquaria)
+
+emm_tp_a<- emmeans(TP_aquaria, ~ Treatment)
+emm_tp_a
+pair_tp_a<- contrast(emm_tp_a, method='pairwise')
+summary(pair_tp_a)
+# Guano different from all treatments, but all other treatments similar 
+
+# Montipora
+TP_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TP) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TP_aquaria_m)
+
+emm_tp_a_m<- emmeans(TP_aquaria_m, ~ Treatment)
+emm_tp_a_m
+pair_tp_a_m<- contrast(emm_tp_a_m, method='pairwise')
+summary(pair_tp_a_m)
+# no difference between treatments
+
+# Porites
+TP_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TP) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TP_aquaria_p)
+
+emm_tp_a_p<- emmeans(TP_aquaria_p, ~ Treatment)
+emm_tp_a_p
+pair_tp_a_p<- contrast(emm_tp_a_p, method='pairwise')
+summary(pair_tp_a_p)
+# Guano different from all treatments, but all other treatments similar 
+
+# Different results pooled vs separated 
+```
+
+# TN:TP
+
+### Dosing
+
+```{r}
+
+# Violin Plot - N:P pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=N_to_P, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species, ncol = 1) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container N:P Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of N:P
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=N_to_P, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species, ncol = 1)+
+  ggtitle("Dosing Container N:P Concentrations")+
+  scale_color_manual(values= naste_colors)
+
+```
+### Analysis of N:P in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+NP_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(N_to_P ~ Treatment, data = .)
+summary(NP_dosing)
+
+emm_np<- emmeans(NP_dosing, ~ Treatment)
+emm_np
+pair_np<- contrast(emm_np, method='pairwise')
+summary(pair_np)
+# Control = Effluent but all other comparisons are different. Inorganic has higher N:P and Guano has lower N:P
+
+#Montipora
+NP_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(N_to_P ~ Treatment, data = .)
+summary(NP_dosing_m)
+
+emm_np_m<- emmeans(NP_dosing_m, ~ Treatment)
+emm_np_m
+pair_np_m<- contrast(emm_np_m, method='pairwise')
+summary(pair_np_m)
+# All treatments are the same except guano and inorganic are different
+
+# Porites
+NP_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(N_to_P ~ Treatment, data = .)
+summary(NP_dosing_p)
+
+emm_np_p<- emmeans(NP_dosing_p, ~ Treatment)
+emm_np_p
+pair_np_p<- contrast(emm_np_p, method='pairwise')
+summary(pair_np_p)
+# Only control and effluent similar, all other comparisons are different
+
+# Pooled and separated data have different results
+```
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - N:P pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=N_to_P, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria N:P Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of N:P
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=N_to_P, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria N:P Concentrations")+
+  scale_color_manual(values= naste_colors)
+```
+
+### Analysis of N:P in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+NP_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(N_to_P ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NP_aquaria)
+
+emm_np_a<- emmeans(NP_aquaria, ~ Treatment)
+emm_np_a
+pair_np_a<- contrast(emm_np_a, method='pairwise')
+summary(pair_np_a)
+# Guano different from all treatments, but all other treatments similar 
+
+# Montipora
+NP_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(N_to_P ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NP_aquaria_m)
+
+emm_np_a_m<- emmeans(NP_aquaria_m, ~ Treatment)
+emm_np_a_m
+pair_np_a_m<- contrast(emm_np_a_m, method='pairwise')
+summary(pair_np_a_m)
+# Guano different from effluent and inorganic treatments, but all other treatments similar 
+
+#Porites
+NP_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(N_to_P ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(NP_aquaria_p)
+
+emm_np_a_p<- emmeans(NP_aquaria_p, ~ Treatment)
+emm_np_a_p
+pair_np_a_p<- contrast(emm_np_a_p, method='pairwise')
+summary(pair_np_a_p)
+# No differences detected between treatments
+
+# Difference in pooled vs separated data
+```
+
+# TIN:PO4
+
+### Dosing
+
+```{r}
+
+# Violin Plot - TIN:PO4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Treatment, y=TIN_to_PO4, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species, ncol = 1) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container TIN:PO4 Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of TIN:PO4
+ggplot(data=subset(nuts, Tank %in% c("Dosing")), aes(x=Timepoint, y=TIN_to_PO4, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species, ncol = 1)+
+  ggtitle("Dosing Container TIN:PO4 Concentrations")+
+  scale_color_manual(values= naste_colors)
+
+```
+
+### Analysis of TIN:PO4 in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+TINPO4_dosing <- nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(TIN_to_PO4 ~ Treatment, data = .)
+summary(TINPO4_dosing)
+
+emm_tinpo4<- emmeans(TINPO4_dosing, ~ Treatment)
+emm_tinpo4
+pair_tinpo4<- contrast(emm_tinpo4, method='pairwise')
+summary(pair_tinpo4)
+# Control = Guano but all other comparisons are different. Inorganic and Effluent has higher N:P than Guano and Control
+
+# Montipora
+TINPO4_dosing_m <- mc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(TIN_to_PO4 ~ Treatment, data = .)
+summary(TINPO4_dosing_m)
+
+emm_tinpo4_m<- emmeans(TINPO4_dosing_m, ~ Treatment)
+emm_tinpo4_m
+pair_tinpo4_m<- contrast(emm_tinpo4_m, method='pairwise')
+summary(pair_tinpo4_m)
+# Inorganic different from all other treatments, all other treatments similar
+
+# Porites
+TINPO4_dosing_p <- pc_nuts %>%
+  filter(Tank == "Dosing") %>%
+  lm(TIN_to_PO4 ~ Treatment, data = .)
+summary(TINPO4_dosing_p)
+
+emm_tinpo4_p<- emmeans(TINPO4_dosing_p, ~ Treatment)
+emm_tinpo4_p
+pair_tinpo4_p<- contrast(emm_tinpo4_p, method='pairwise')
+summary(pair_tinpo4_p)
+# Inorganic different from control and guano, all others similar
+
+# Different results pooled vs separate data
+```
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - TIN:PO4 pooled at all timepoints
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Treatment, y=TIN_to_PO4, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria TIN:PO4 Concentrations")+
+  scale_fill_manual(values=naste_colors)
+
+# Line Plot - to show time series of TIN:PO4
+ggplot(data=subset(nuts, Tank %in% c("Aquaria")), aes(x=Timepoint, y=TIN_to_PO4, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria TIN:PO4 Concentrations")+
+  scale_color_manual(values= naste_colors)
+```
+
+### Analysis of TIN:PO4 in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+TINPO4_aquaria <- nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(TIN_to_PO4 ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TINPO4_aquaria)
+
+emm_tinpo4_a<- emmeans(NP_aquaria, ~ Treatment)
+emm_tinpo4_a
+pair_tinpo4_a<- contrast(emm_tinpo4_a, method='pairwise')
+summary(pair_tinpo4_a)
+# Guano different from all treatments, but all other treatments similar 
+
+# Montipora
+TINPO4_aquaria_m <- mc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(TIN_to_PO4 ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TINPO4_aquaria_m)
+
+emm_tinpo4_a_m<- emmeans(NP_aquaria_m, ~ Treatment)
+emm_tinpo4_a_m
+pair_tinpo4_a_m<- contrast(emm_tinpo4_a_m, method='pairwise')
+summary(pair_tinpo4_a_m)
+# Guano different from effluent and inorganic, everything else similar
+
+# Porites
+TINPO4_aquaria_p <- pc_nuts %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(TIN_to_PO4 ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TINPO4_aquaria_p)
+
+emm_tinpo4_a_p<- emmeans(NP_aquaria_p, ~ Treatment)
+emm_tinpo4_a_p
+pair_tinpo4_a_p<- contrast(emm_tinpo4_a_p, method='pairwise')
+summary(pair_tinpo4_a_p)
+# no difference between any treatments
+
+# Different results pooled vs separated data
+```
+
+# DOC
+
+### Dosing
+
+```{r}
+
+# Violin Plot - DOC pooled at all timepoints
+ggplot(data=subset(doc, Tank %in% c("Dosing")),aes(x=Treatment, y=NPOC_uM, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container DOC Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 DOC")
+
+
+# Line Plot - to show time series of DOC
+ggplot(data=subset(doc, Tank %in% c("Dosing")), aes(x=Timepoint, y=NPOC_uM, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species)+
+  ggtitle("Dosing Container DOC Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 DOC")
+
+
+```
+
+### Analysis of DOC in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites data
+DOC_dosing <- doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(NPOC_uM) ~ Treatment, data = .)
+summary(DOC_dosing)
+
+emm_doc<- emmeans(DOC_dosing, ~ Treatment)
+emm_doc
+pair_doc<- contrast(emm_doc, method='pairwise')
+summary(pair_doc)
+# No difference in DOC in dosing containers
+
+# Montipora
+DOC_dosing_m <- mc_doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(NPOC_uM) ~ Treatment, data = .)
+summary(DOC_dosing_m)
+
+emm_doc_m<- emmeans(DOC_dosing_m, ~ Treatment)
+emm_doc_m
+pair_doc_m<- contrast(emm_doc_m, method='pairwise')
+summary(pair_doc_m)
+# No difference in DOC in mcap dosing containers
+
+# Porites
+DOC_dosing_p <- pc_doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(NPOC_uM) ~ Treatment, data = .)
+summary(DOC_dosing_p)
+
+emm_doc_p<- emmeans(DOC_dosing_p, ~ Treatment)
+emm_doc_p
+pair_doc_p<- contrast(emm_doc_p, method='pairwise')
+summary(pair_doc_p)
+# No difference in DOC in pcom dosing containers
+
+# Same results pooled vs separated data
+
+```
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - DOC pooled at all timepoints
+ggplot(data=subset(doc, Tank %in% c("Aquaria")), aes(x=Treatment, y=NPOC_uM, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria DOC Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 DOC")
+
+
+# Line Plot - to show time series of DOC
+  ### NOTE- Heated Porites Inorganic missing because possible outlier (removed in data wrangling chunk above)
+ggplot(data=subset(doc, Tank %in% c("Aquaria")), aes(x=Timepoint, y=NPOC_uM, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria DOC Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 DOC")
+
+```
+
+### Analysis of DOC in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+DOC_aquaria <- doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(NPOC_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(DOC_aquaria)
+
+emm_doc_a<- emmeans(DOC_aquaria, ~ Treatment)
+emm_doc_a
+pair_doc_a<- contrast(emm_doc_a, method='pairwise')
+summary(pair_doc_a)
+# no differences
+
+# Montipora
+DOC_aquaria_m <- mc_doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(NPOC_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(DOC_aquaria_m)
+
+emm_doc_a_m<- emmeans(DOC_aquaria_m, ~ Treatment)
+emm_doc_a_m
+pair_doc_a_m<- contrast(emm_doc_a_m, method='pairwise')
+summary(pair_doc_a_m)
+# no differences
+
+# Porites
+DOC_aquaria_p <- pc_doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(NPOC_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(DOC_aquaria_p)
+
+emm_doc_a_p<- emmeans(DOC_aquaria_p, ~ Treatment)
+emm_doc_a_p
+pair_doc_a_p<- contrast(emm_doc_a_p, method='pairwise')
+summary(pair_doc_a_p)
+# no differences
+
+# No differences between pooled and separated data
+
+```
+
+# TN - from DOC machine
+
+### Dosing
+
+```{r}
+
+# Violin Plot - TN pooled at all timepoints
+ggplot(data=subset(doc, Tank %in% c("Dosing")), aes(x=Treatment, y=TN_uM, fill=Treatment))+
+  geom_violin()+
+  facet_wrap(~Species, ncol = 1) +
+  geom_jitter(width=0)+
+  ggtitle("Dosing Container TN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of TN
+ggplot(data=subset(doc, Tank %in% c("Dosing")), aes(x=Timepoint, y=TN_uM, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_wrap(~Species, ncol = 1)+
+  ggtitle("Dosing Container TN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+```
+
+### Analysis of TN in Dosing - linear model
+```{r}
+# Pooled Montipora and Porites Data
+TN2_dosing <- doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN_uM) ~ Treatment, data = .)
+summary(TN2_dosing)
+
+emm_tn2<- emmeans(TN2_dosing, ~ Treatment)
+emm_tn2
+pair_tn2<- contrast(emm_tn2, method='pairwise')
+summary(pair_tn2)
+# Effluent and guano similar but all other comparisons different
+
+# Montipora
+TN2_dosing_m <- mc_doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN_uM) ~ Treatment, data = .)
+summary(TN2_dosing_m)
+
+emm_tn2_m<- emmeans(TN2_dosing_m, ~ Treatment)
+emm_tn2_m
+pair_tn2_m<- contrast(emm_tn2_m, method='pairwise')
+summary(pair_tn2_m)
+# Effluent and guano similar but all other comparisons different
+
+# Porites
+TN2_dosing_p <- pc_doc %>%
+  filter(Tank == "Dosing") %>%
+  lm(log10(TN_uM) ~ Treatment, data = .)
+summary(TN2_dosing_p)
+
+emm_tn2_p<- emmeans(TN2_dosing_p, ~ Treatment)
+emm_tn2_p
+pair_tn2_p<- contrast(emm_tn2_p, method='pairwise')
+summary(pair_tn2_p)
+# Effluent and guano similar but all other comparisons different
+
+# No differences between pooled and separated data
+```
+
+
+### Treatment Aquaria
+
+```{r}
+# Violin Plot - TN pooled at all timepoints
+ggplot(data=subset(doc, Tank %in% c("Aquaria")), aes(x=Treatment, y=TN_uM, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria TN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of TN
+ggplot(data=subset(doc, Tank %in% c("Aquaria")), aes(x=Timepoint, y=TN_uM, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria TN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+```
+
+### Analysis of DOC in aquaria - LME
+```{r}
+# Pooled Montipora and Porites data
+TN2_aquaria <- doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN2_aquaria)
+
+emm_tn2_a<- emmeans(TN2_aquaria, ~ Treatment)
+emm_tn2_a
+pair_tn2_a<- contrast(emm_tn2_a, method='pairwise')
+summary(pair_tn2_a)
+# no differences
+
+# Montipora
+TN2_aquaria_m <- mc_doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN2_aquaria_m)
+
+emm_tn2_a_m<- emmeans(TN2_aquaria_m, ~ Treatment)
+emm_tn2_a_m
+pair_tn2_a_m<- contrast(emm_tn2_a_m, method='pairwise')
+summary(pair_tn2_a_m)
+# no differences
+
+# Porites
+TN2_aquaria_p <- pc_doc %>%
+  filter(Tank == "Aquaria") %>%
+  lmer(log10(TN_uM) ~ Treatment * Timepoint + (1|Aquaria), data = .)
+summary(TN2_aquaria_p)
+
+emm_tn2_a_p<- emmeans(TN2_aquaria_p, ~ Treatment)
+emm_tn2_a_p
+pair_tn2_a_p<- contrast(emm_tn2_a_p, method='pairwise')
+summary(pair_tn2_a_p)
+# no differences
+
+# No differences between pooled and separated data
+```
+
+
+## Looking at the drawdown of TIN in the aquaria. The aquaria were filled at a rate of 1 L/hr and dosed at a rate of 0.109 L/hr nutrients and 0.891 L/hr seawater. I found the expected TIN for each of the tanks with the equation exptected_TIN = (0.109 * measured dosing container concentration) + (0.891 * 2.82). The measured HIMB seawater input was 2.82 umol/L TIN, so this was used in our equation as the added TIN from the seawater input.
+
+```{r}
+# upload csv with calculations
+
+drawdown <- read.csv("C:\\Users\\jglaz\\Desktop\\Datasets\\nuts_drawdown.csv")
+
+drawdown <- drawdown %>% drop_na()
+```
+
+
+```{r}
+
+# Violin Plot - expected TIN pooled at all timepoints
+ggplot(data=drawdown, aes(x=Treatment, y=Expected_TIN, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria Expected TIN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of expected TIN
+ggplot(data=drawdown, aes(x=Timepoint, y=Expected_TIN, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria Expected TIN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+```
+```{r}
+
+# Violin Plot - drawdown of TIN pooled at all timepoints
+ggplot(data=drawdown, aes(x=Treatment, y=Drawdown, fill=Treatment))+
+  geom_violin()+
+  facet_grid(Species ~ Temperature) +
+  geom_jitter(width=0)+
+  ggtitle("Treatment Aquaria Drawdown of TIN Concentrations")+
+  scale_fill_manual(values=naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+
+# Line Plot - to show time series of expected TIN
+ggplot(data=drawdown, aes(x=Timepoint, y=Drawdown, group=Treatment, color=Treatment))+
+  geom_line(size = 1)+
+  facet_grid(Species ~ Temperature)+
+  ggtitle("Treatment Aquaria Drawdown of TIN Concentrations")+
+  scale_color_manual(values= naste_colors)+
+  scale_y_continuous(trans = "log10", name = "Log10 TN")
+
+```
+```{r}
+ggplot()+
+  geom_line(data=drawdown,
+            aes(x=Timepoint, y=Expected_TIN, group=Treatment, color=Treatment, linetype="dashed"))+
+geom_line(data = drawdown, aes(x = Timepoint, y = TIN, group = Treatment, color = Treatment, linetype="solid"),
+          stat = "summary", fun = mean)+
+  facet_wrap(~Species)+
+  geom_jitter(data=drawdown,aes(x=Timepoint, y=TIN, color=Treatment))+
+  ggtitle("Treatment Tank Inorganic Nitrogen Concentrations")+
+  labs(y="TIN")+
+  scale_color_manual(values= naste_colors)+
+  scale_linetype_manual(
+    values = c("dashed", "solid"), 
+    labels = c("Expected TIN", "Actual TIN") 
+  ) +
+  labs(linetype = "Expected vs Actual TIN") 
+```
+
