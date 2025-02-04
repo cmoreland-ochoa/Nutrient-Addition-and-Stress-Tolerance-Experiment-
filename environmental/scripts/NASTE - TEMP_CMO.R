@@ -9,9 +9,15 @@ library(fishualize)
 library(formattable)
 library(qiime2R)
 library(cowplot)
+library(here)
+library(stringr)
 #Update source file 
-CAL<-read.csv("H:/Shared drives/Donahue Lab Data Drive/Jessica Glazner_Donahue Lab Data Drive/NASTE - Nutrient Addition and Stress Tolerance Experiment/DATA/iButton (TEMP)/NASTE_Temp Data_ALL - 7.3-7.5.2023 Calibration.csv")
-Cal <- melt(CAL ,  id.vars = 'Date_Time')
+here()
+(allfiles = list.files(path = here("data_all","environmental","iButton (TEMP)"),
+                       pattern = ".CSV",
+                       full.names = TRUE,
+                       recursive = TRUE) )
+write.csv(Cal, "D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/NASTE_Temp Data_ALL_Calibration.csv")
 anova_test(value ~ variable, data = Cal)
 Cal %>%
   ggplot( aes(x=Date_Time, y=value, group=variable, color=variable)) +
