@@ -33,15 +33,10 @@ DELTA<-data.frame(MEAN %>%
 
 
 #PCOM
-#Update Source file
 Pdelta<-DELTA %>% slice(25:49)
 Pdelta$variable <- c("PA1", "PA10", "PA11", "PA12","PA2", "PA3", "PA4", "PA5", "PA6", "PA7", "PA8", "PA9","PCOM.SOURCE", 
                      "PH1","PH10", "PH11", "PH12", "PH2", "PH3", "PH4", "PH5", "PH6", "PH7", "PH8", "PH9" )
-#Delete after fixing MCAP
-PCOM<-read.csv("D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM.csv")
-PCOM<-melt(PCOM ,  id.vars = 'Date_Time')
-write.csv(PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_All.csv")
-
+#PCOM Source file
 Pcom <- read_csv(here("./data_all/environmental/iButton (TEMP)/PCOM_All.csv"))
 Pcom <- merge(Pcom, Pdelta, by = "variable", all.x = TRUE)
 Pcom$Avg <- NULL
@@ -114,16 +109,16 @@ date_ranges_PCOM <- data.frame(
 aggregate_list_PCOM <- list()
 for(i in 1:nrow(date_ranges_PCOM)) {
   filtered_data <- P.true.h %>%
-    filter(as.Date(Date) >= date_ranges$start_date[i] &
-             as.Date(Date) <= date_ranges$end_date[i])
+    filter(as.Date(Date) >= date_ranges_PCOM$start_date[i] &
+             as.Date(Date) <= date_ranges_PCOM$end_date[i])
   aggregate_data <- filtered_data %>%
     group_by(variable,Treatment) %>% 
-    summarize(   # or use mean(), median(), etc.
+    summarize(   
       DHScore = sum(DHScore, na.rm = TRUE),
       Cumulative_DHH = max(Cumulative_DHH, na.rm = TRUE)
     )
-  aggregate_data$start_date <- date_ranges$start_date[i]
-  aggregate_data$end_date <- date_ranges$end_date[i]
+  aggregate_data$start_date <- date_ranges_PCOM$start_date[i]
+  aggregate_data$end_date <- date_ranges_PCOM$end_date[i]
   aggregate_list_PCOM[[i]] <- aggregate_data
 }
 final_aggregate_PCOM <- bind_rows(aggregate_list_PCOM)
@@ -133,15 +128,16 @@ final_aggregate_PCOM <- final_aggregate_PCOM %>%
          Cumulative_DHH = if_else(Cumulative_DHH == 0, mean(Cumulative_DHH[Cumulative_DHH != 0], na.rm = TRUE), Cumulative_DHH)
          ) %>%
   ungroup()
-write.csv(final_aggregate_PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Aquaria_Temp_Daily.csv")
+write.csv(final_aggregate_PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Aquaria_Temp_Daily.csv", row.names=FALSE)
 final_aggregate_PCOM_treatment <- final_aggregate_PCOM %>%
   group_by(Treatment,end_date)%>%
   summarise(DHScore=mean(DHScore),
             Cumulative_DHH=mean(Cumulative_DHH),
-            start_date=max(start_date))
-write.csv(final_aggregate_PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Treatment_Temp_Daily.csv")
+            start_date=max(start_date))%>%
+  mutate_if(is.numeric, signif, digits=4)
+write.csv(final_aggregate_PCOM_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Treatment_Temp_Daily.csv",row.names=FALSE)
 
-#Line plots for PCOM
+#Line plots for PCOM *NOT FUNCTIONAL NEED TO FIX*
 important_dates_P <- as.Date(c("2023-07-26", "2023-08-21", "2023-09-11","2023-10-09"))
 P.plot1 <-PCOM.treatment %>%
   ggplot( aes(x=Date, y=true.value, color=Treatment)) +
@@ -246,39 +242,25 @@ P.true.h.Treatment %>%
 
 #MCAP
 #Update Source File
-Mdelta<-DELTA %>% slice(2:25)
-Mdelta$variable <- c("MA1", "MA2", "MA3", "MA4", "MA6", "MA7", "MA8", "MA9", "MA10", "MA11", "MA12",
-                     "MH1", "MH2", "MH3", "MH4", "MH5", "MH6", "MH7", "MH8", "MH9", "MH10", "MH11", "MH12","MCAP.SOURCE")
-MCAP<-read.csv("H:/Shared drives/Donahue Lab Data Drive/Jessica Glazner_Donahue Lab Data Drive/NASTE - Nutrient Addition and Stress Tolerance Experiment/DATA/iButton (TEMP)/NASTE_Temp Data_ALL - 7.24-10.8.2023 MCAP_AVG.csv")
-M.cap <- melt(MCAP ,  id.vars = 'Date')
-M.cap<-subset(M.cap, variable!="Hour")
-M.cap<-subset(M.cap, variable!="Timepoint")
-M.cap<-subset(M.cap, variable!="MCAP.SOURCE")
-M.cap <- merge(M.cap, Mdelta, by = "variable", all.x = TRUE)
-M.cap$Avg <- NULL
-M.cap<-data.frame(M.cap %>% 
-                    mutate(true.value = value+delta))
-M.cap$Date <- mdy(M.cap$Date)
-MCAP.treatment<-M.cap %>%
-  mutate(Treatment = case_when(variable %in% c("PA1", "PA2", "PA3") ~ "AMB-Guano",
-                               variable %in% c("PA4", "PA5", "PA6") ~ "AMB-Control",
-                               variable %in% c("PA7", "PA8", "PA9") ~ "AMB-Inorganic",
-                               variable %in% c("PA10", "PA11", "PA12") ~ "AMB-Effluent",
-                               variable %in% c("PH1", "PH2", "PH3") ~ "HEAT-Guano",
-                               variable %in% c("PH4", "PH5", "PH6") ~ "HEAT-Control",
-                               variable %in% c("PH7", "PH8", "PH9") ~ "HEAT-Inorganic",
-                               variable %in% c("PH10", "PH11", "PH12") ~ "HEAT-Effluent",
-                               variable %in% c("PCOM.SOURCE") ~ "PCOM.Source"
-  ))
+Mdelta<-DELTA %>% slice(1:24)
+Mdelta$variable <- c("MA1", "MA10", "MA11", "MA12","MA2", "MA3", "MA4", "MA6", "MA7", "MA8", "MA9", "MCAP.SOURCE",
+                     "MH1", "MH10", "MH11", "MH12","MH2", "MH3", "MH4", "MH5", "MH6", "MH7", "MH8", "MH9" )
 
-MCAP.treatment$true.value.30<-MCAP.treatment$true.value-30
-MCAP.treatment$DHH = ifelse(MCAP.treatment$"true.value" <= 30,"0","1")
-MCAP.treatment <- transform(MCAP.treatment,
-                            DHH = as.numeric(DHH))
-M.cap.1<-MCAP.treatment %>%
-  group_by(Date, variable) %>%
-  summarize(true.value = mean(true.value),DHH = sum(DHH)) 
-M.cap.treatment<-M.cap.1 %>%
+#MCAP Source file
+Mcap <- read_csv(here("./data_all/environmental/iButton (TEMP)/MCAP_All.csv"))
+Mcap <- merge(Mcap, Mdelta, by = "variable", all.x = TRUE)
+Mcap$Avg <- NULL
+Mcap<-data.frame(Mcap %>% 
+                   mutate(true.value = value+delta))
+Mcap$value <- NULL
+Mcap$delta <- NULL
+Mcap$Date_Time <- mdy_hm(Mcap$Date_Time)
+Mcap_hourly_data <- Mcap %>%
+  mutate(Date_Time = floor_date(Date_Time, "hour")) %>%  
+  group_by(variable,Date_Time) %>%
+  summarize(true.value = mean(true.value))
+Mcap_hourly_data<-separate(data = Mcap_hourly_data, col = Date_Time, into = c("Date", "Time"), sep = " ")
+MCAP.treatment<-Mcap_hourly_data %>%
   mutate(Treatment = case_when(variable %in% c("MA1", "MA2", "MA3") ~ "AMB-Guano",
                                variable %in% c("MA4", "MA5", "MA6") ~ "AMB-Control",
                                variable %in% c("MA7", "MA8", "MA9") ~ "AMB-Inorganic",
@@ -286,15 +268,79 @@ M.cap.treatment<-M.cap.1 %>%
                                variable %in% c("MH1", "MH2", "MH3") ~ "HEAT-Guano",
                                variable %in% c("MH4", "MH5", "MH6") ~ "HEAT-Control",
                                variable %in% c("MH7", "MH8", "MH9") ~ "HEAT-Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "HEAT-Effluent"
+                               variable %in% c("MH10", "MH11", "MH12") ~ "HEAT-Effluent",
+                               variable %in% c("MCAP.SOURCE") ~ "MCAP.Source"
   ))
-M.cap.treatment <- na.omit(M.cap.treatment)
-M.cap.treatment<-M.cap.treatment %>%
-  filter( is.na(true.value) == FALSE, is.na(DHH) == FALSE) %>%
-  group_by(Treatment,Date) %>%
-  summarize(true.value = mean(true.value), DHH = mean(DHH)) %>% 
+
+MCAP.treatment$true.value.30<-MCAP.treatment$true.value-30
+MCAP.treatment$DHH = ifelse(MCAP.treatment$"true.value" <= 30,"0","1")
+MCAP.treatment <- transform(MCAP.treatment,
+                            DHH = as.numeric(DHH))
+MCAP.treatment <- na.omit(MCAP.treatment)
+MCAP.treatment<-MCAP.treatment %>%
+  group_by(variable,Treatment,Date) %>%
+  summarize(true.value = mean(true.value),
+            DHH = sum(DHH)
+  ) %>% 
   mutate(Cumulative_DHH = cumsum(DHH))%>%
   mutate_if(is.numeric, signif, digits=3)
+
+M.true.h=MCAP.treatment[MCAP.treatment$variable %in% c("MH1", "MH2", "MH3", "MH4", "MH5", "MH6", "MH7", "MH8", "MH9", "MH10", "MH11", "MH12"), ]  
+M.true.h$true.value.30<-M.true.h$true.value-30
+M.true.h$DHScore = ifelse(M.true.h$"true.value.30" <= 0,"0",M.true.h$"true.value.30")
+M.true.h <- transform(M.true.h,
+                      DHScore = as.numeric(DHScore),
+                      DHH = as.numeric(DHH))
+M.true.h.sum<-M.true.h %>% 
+  group_by(variable) %>%
+  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
+  mutate_if(is.numeric, signif, digits=4)
+M.true.h.sum$DHD<-M.true.h.sum$DHH/24
+M.true.h.avg<-M.true.h.sum %>%
+  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
+                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
+                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
+                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
+  ))
+M.true.h.avg <- M.true.h.avg %>%
+  mutate_if(is.numeric, signif, digits=4)
+anova_test(DHH ~ Treatment, data = M.true.h.avg)
+M.true.h.Treatment<-M.true.h.avg %>% 
+  group_by(Treatment) %>% 
+  summarise_at(c('DHH','DHScore','DHD'),mean, na.rm=TRUE )%>%
+  mutate_if(is.numeric, signif, digits=4)
+
+#MCAP DAILY HEATING 
+date_ranges_MCAP <- data.frame(
+  start_date = as.Date(c("2023-07-24")),
+  end_date = as.Date(c("2023-08-29","2023-09-03","2023-09-04","2023-09-05","2023-09-06", "2023-09-07"))
+)
+aggregate_list_MCAP <- list()
+for(i in 1:nrow(date_ranges_MCAP)) {
+  filtered_data <- M.true.h %>%
+    filter(as.Date(Date) >= date_ranges_MCAP$start_date[i] &
+             as.Date(Date) <= date_ranges_MCAP$end_date[i])
+  aggregate_data <- filtered_data %>%
+    group_by(variable,Treatment) %>% 
+    summarize(  
+      DHScore = sum(DHScore, na.rm = TRUE),
+      Cumulative_DHH = max(Cumulative_DHH, na.rm = TRUE)
+    )
+  aggregate_data$start_date <- date_ranges_MCAP$start_date[i]
+  aggregate_data$end_date <- date_ranges_MCAP$end_date[i]
+  aggregate_list_MCAP[[i]] <- aggregate_data
+}
+final_aggregate_MCAP <- bind_rows(aggregate_list_MCAP)
+write.csv(final_aggregate_MCAP,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/MCAP_Aquaria_Temp_Daily.csv",row.names=FALSE)
+final_aggregate_MCAP_treatment <- final_aggregate_MCAP %>%
+  group_by(Treatment,end_date)%>%
+  summarise(DHScore=mean(DHScore),
+            Cumulative_DHH=mean(Cumulative_DHH),
+            start_date=max(start_date))%>%
+  mutate_if(is.numeric, signif, digits=4)
+write.csv(final_aggregate_MCAP_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/MCAP_Treatment_Temp_Daily.csv",row.names=FALSE)
+
+#MCAP plots *NOT FUNCTIONAL NEED TO FIX*
 important_dates_M <- as.Date(c("2023-07-26", "2023-08-21", "2023-09-08","2023-10-09"))
 M.plot1 <-M.cap.treatment %>%
   ggplot( aes(x=Date, y=true.value, color=Treatment)) +
@@ -329,54 +375,6 @@ M.plot2<-M.cap.treatment %>%
 M.plot2
 plot_grid(M.plot1,M.plot2,nrow=2)
 
-
-
-
-
-
-
-MCAP$Date <- NULL
-MCAP$Hour <- NULL
-Mcap <- melt(MCAP ,  id.vars = 'Timepoint')
-M.All <- merge(Mcap, Mdelta, by = "variable", all.x = TRUE)
-M.All$Avg <- NULL
-M.true<-data.frame(M.All %>% 
-                     mutate(true.value = value+delta))
-Mcap %>%
-  ggplot( aes(x=Timepoint, y=value, group=variable, color=variable)) +
-  geom_line() +
-  ylim(22,32.5)+
-  ggtitle("MCAP HOURLY TEMP") +
-  ylab("Temp (C)") +
-xlab("Timepoints")+
-  theme_q2r()+
-  theme(legend.position='bottom')+
-  guides(color = guide_legend(nrow = 3,title="Aquaria"))+
-  scale_x_continuous(breaks=c(0,840,1340,1827),labels=c('T0 7/24', 'T1 8/21', 'T2 9/8','T3 10/9'))
-
-M.true.h=M.true[M.true$variable %in% c("MH1", "MH2", "MH3", "MH4", "MH5", "MH6", "MH7", "MH8", "MH9", "MH10", "MH11", "MH12"), ]  
-M.true.h$true.value.30<-M.true.h$true.value-30
-M.true.h$DHH = ifelse(M.true.h$"true.value" <= 30,"0","1")
-M.true.h$DHScore = ifelse(M.true.h$"true.value.30" <= 0,"0",M.true.h$"true.value.30")
-M.true.h <- transform(M.true.h,
-                      DHScore = as.numeric(DHScore),
-                      DHH = as.numeric(DHH))
-M.true.h.sum<-M.true.h %>% 
-  group_by(variable) %>% 
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>% 
-  mutate_if(is.numeric, signif, digits=4) 
-M.true.h.sum$DHD<-M.true.h.sum$DHH/24
-M.true.h.avg<-M.true.h.sum %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg <- M.true.h.avg %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-anova_test(DHH ~ Treatment, data = M.true.h.avg)
-
 #Bar plots for MCAP-All Aquaria
 M.true.h.avg %>%
   ggplot( aes(x=DHH, y=variable, fill=Treatment)) +
@@ -399,12 +397,6 @@ M.true.h.avg %>%
   xlab("Degree Heating Days")+
   ylab("Aquaria")+
   theme_q2r()
-
-#Run before moving past the Bar plots
-M.true.h.Treatment<-M.true.h.avg %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore','DHD'),mean, na.rm=TRUE )
-
 #Bar plots for MCAP-Treatment
 M.true.h.Treatment %>%
   ggplot( aes(x=DHH, y=Treatment, fill=Treatment)) +
@@ -424,145 +416,3 @@ M.true.h.Treatment %>%
   ggtitle("MCAP Degree Heating Days - Average") +
   xlab("Degree Heating Days")+ 
   theme_q2r()
-
-#MCAP DAILY HEATING 
-M.true.h.sum.8.29<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:882)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.8.29<-M.true.h.sum.8.29 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.8.29 <- M.true.h.avg.8.29 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.8.29<-M.true.h.avg.8.29 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )
-
-M.true.h.sum.9.3<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:1002)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.9.3<-M.true.h.sum.9.3 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.9.3 <- M.true.h.avg.9.3 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.9.3<-M.true.h.avg.9.3 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )
-
-M.true.h.sum.9.4<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:1026)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.9.4<-M.true.h.sum.9.4 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.9.4 <- M.true.h.avg.9.4 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.9.4<-M.true.h.avg.9.4 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )
-
-M.true.h.sum.9.5<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:1040)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.9.5<-M.true.h.sum.9.5 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.9.5 <- M.true.h.avg.9.5 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.9.5<-M.true.h.avg.9.5 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )
-
-M.true.h.sum.9.6<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:1064)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.9.6<-M.true.h.sum.9.6 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.9.6 <- M.true.h.avg.9.6 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.9.6<-M.true.h.avg.9.6 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )
-
-M.true.h.sum.9.7<-M.true.h %>% 
-  group_by(variable) %>%
-  filter((Timepoint == (1:1088)))%>%
-  summarise_at(c('DHH','DHScore'),sum, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.avg.9.7<-M.true.h.sum.9.7 %>%
-  mutate(Treatment = case_when(variable %in% c("MH1", "MH2", "MH3") ~ "Guano",
-                               variable %in% c("MH4", "MH5", "MH6") ~ "Control",
-                               variable %in% c("MH7", "MH8", "MH9") ~ "Inorganic",
-                               variable %in% c("MH10", "MH11", "MH12") ~ "Effluent"
-  ))
-M.true.h.avg.9.7 <- M.true.h.avg.9.7 %>%
-  mutate(across(everything(), ~ replace(., . == 0, mean(., na.rm = TRUE))))%>%
-  mutate_if(is.numeric, signif, digits=4)
-M.true.h.Treatment.9.7<-M.true.h.avg.9.7 %>% 
-  group_by(Treatment) %>% 
-  summarise_at(c('DHH','DHScore'),mean, na.rm=TRUE )%>%
-  mutate_if(is.numeric, signif, digits=4)
-
-M.true.h.avg$DHH8.29 = M.true.h.avg.8.29$DHH
-M.true.h.avg$DHScore8.29 = M.true.h.avg.8.29$DHScore
-M.true.h.avg$DHH9.3 = M.true.h.avg.9.3$DHH
-M.true.h.avg$DHScore9.3 = M.true.h.avg.9.3$DHScore
-M.true.h.avg$DHH9.4 = M.true.h.avg.9.4$DHH
-M.true.h.avg$DHScore9.4 = M.true.h.avg.9.4$DHScore
-M.true.h.avg$DHH9.5 = M.true.h.avg.9.5$DHH
-M.true.h.avg$DHScore9.5 = M.true.h.avg.9.5$DHScore
-M.true.h.avg$DHH9.6 = M.true.h.avg.9.6$DHH
-M.true.h.avg$DHScore9.6 = M.true.h.avg.9.6$DHScore
-M.true.h.avg$DHH9.7 = M.true.h.avg.9.7$DHH
-M.true.h.avg$DHScore9.7 = M.true.h.avg.9.7$DHScore
-M.true.h.avg<-M.true.h.avg %>%
-  mutate_if(is.numeric, signif, digits=4)
-write.csv(M.true.h.avg,"H:/Shared drives/Donahue Lab Data Drive/Jessica Glazner_Donahue Lab Data Drive/NASTE - Nutrient Addition and Stress Tolerance Experiment/DATA/iButton (TEMP)/MCAP All Aquaria Daily DHH and DHScore.csv", row.names = FALSE)
-
-M.true.h.Treatment$DHH8.29 = M.true.h.Treatment.8.29$DHH
-M.true.h.Treatment$DHScore8.29 = M.true.h.Treatment.8.29$DHScore
-M.true.h.Treatment$DHH9.3 = M.true.h.Treatment.9.3$DHH
-M.true.h.Treatment$DHScore9.3 = M.true.h.Treatment.9.3$DHScore
-M.true.h.Treatment$DHH9.4 = M.true.h.Treatment.9.4$DHH
-M.true.h.Treatment$DHScore9.4 = M.true.h.Treatment.9.4$DHScore
-M.true.h.Treatment$DHH9.5 = M.true.h.Treatment.9.5$DHH
-M.true.h.Treatment$DHScore9.5 = M.true.h.Treatment.9.5$DHScore
-M.true.h.Treatment$DHH9.6 = M.true.h.Treatment.9.6$DHH
-M.true.h.Treatment$DHScore9.6 = M.true.h.Treatment.9.6$DHScore
-M.true.h.Treatment$DHH9.7 = M.true.h.Treatment.9.7$DHH
-M.true.h.Treatment$DHScore9.7 = M.true.h.Treatment.9.7$DHScore
-M.true.h.Treatment<-M.true.h.Treatment %>%
-  mutate_if(is.numeric, signif, digits=4)
-write.csv(M.true.h.Treatment,"H:/Shared drives/Donahue Lab Data Drive/Jessica Glazner_Donahue Lab Data Drive/NASTE - Nutrient Addition and Stress Tolerance Experiment/DATA/iButton (TEMP)/MCAP Daily DHH and DHScore.csv", row.names = FALSE)
