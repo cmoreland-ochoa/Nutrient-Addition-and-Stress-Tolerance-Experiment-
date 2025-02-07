@@ -128,14 +128,14 @@ final_aggregate_PCOM <- final_aggregate_PCOM %>%
          Cumulative_DHH = if_else(Cumulative_DHH == 0, mean(Cumulative_DHH[Cumulative_DHH != 0], na.rm = TRUE), Cumulative_DHH)
          ) %>%
   ungroup()
-write.csv(final_aggregate_PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Aquaria_Temp_Daily.csv", row.names=FALSE)
+write.csv(final_aggregate_PCOM,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/environmental/output/PCOM_Aquaria_Temp_Daily.csv", row.names=FALSE)
 final_aggregate_PCOM_treatment <- final_aggregate_PCOM %>%
   group_by(Treatment,end_date)%>%
   summarise(DHScore=mean(DHScore),
             Cumulative_DHH=mean(Cumulative_DHH),
             start_date=max(start_date))%>%
   mutate_if(is.numeric, signif, digits=4)
-write.csv(final_aggregate_PCOM_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/PCOM_Treatment_Temp_Daily.csv",row.names=FALSE)
+write.csv(final_aggregate_PCOM_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/environmental/output/PCOM_Treatment_Temp_Daily.csv",row.names=FALSE)
 
 #Line plots for PCOM *NOT FUNCTIONAL NEED TO FIX*
 important_dates_P <- as.Date(c("2023-07-26", "2023-08-21", "2023-09-11","2023-10-09"))
@@ -331,14 +331,14 @@ for(i in 1:nrow(date_ranges_MCAP)) {
   aggregate_list_MCAP[[i]] <- aggregate_data
 }
 final_aggregate_MCAP <- bind_rows(aggregate_list_MCAP)
-write.csv(final_aggregate_MCAP,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/MCAP_Aquaria_Temp_Daily.csv",row.names=FALSE)
+write.csv(final_aggregate_MCAP,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/environmental/output/MCAP_Aquaria_Temp_Daily.csv",row.names=FALSE)
 final_aggregate_MCAP_treatment <- final_aggregate_MCAP %>%
   group_by(Treatment,end_date)%>%
   summarise(DHScore=mean(DHScore),
             Cumulative_DHH=mean(Cumulative_DHH),
             start_date=max(start_date))%>%
   mutate_if(is.numeric, signif, digits=4)
-write.csv(final_aggregate_MCAP_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/data_all/environmental/iButton (TEMP)/MCAP_Treatment_Temp_Daily.csv",row.names=FALSE)
+write.csv(final_aggregate_MCAP_treatment,"D:/GitHub/Nutrient-Addition-and-Stress-Tolerance-Experiment-/environmental/output/MCAP_Treatment_Temp_Daily.csv",row.names=FALSE)
 
 #MCAP plots *NOT FUNCTIONAL NEED TO FIX*
 important_dates_M <- as.Date(c("2023-07-26", "2023-08-21", "2023-09-08","2023-10-09"))
